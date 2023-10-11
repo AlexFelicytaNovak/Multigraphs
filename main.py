@@ -5,13 +5,14 @@ import numpy as np
 class MultiDiGraph():
 
     def __init__(self, matrix):
-        self.adjacency_matrix = np.array(matrix).astype(int) # = matrix ? Do we saadasdadsa
-        self.size = len(self.adjacency_matrix) # TODO: what is the actual definiton of size?  # noqa: E501
+        self.adjacency_matrix = np.array(matrix).astype(int) # = matrix ? Do we want a list of lists or a np.array
+        self.size = len(self.adjacency_matrix) # TODO: what is the actual definiton of size?
 
-    def print_me_daddy(self):
+
+    def print(self):
         print('Size = ' + str(self.size))
         print(self.adjacency_matrix)
-        # [print(row) for row in self.adjacency_matrix]
+        # [print(row) for row in self.adjacency_matrix] # that is for a list of lists
 
 
     # TODO
@@ -43,8 +44,7 @@ if __name__ == '__main__':
 
         
         g1 = MultiDiGraph(matrix)
-        g1.print_me_daddy()
+        g1.print()
         
-
     else:
         print('No graph data file given!')
