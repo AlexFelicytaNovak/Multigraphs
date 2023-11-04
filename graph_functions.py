@@ -2,6 +2,19 @@ import numpy as np
 from multidigraph import MultiDiGraph
 
 
+def read_graph_from_file(filename: str) -> np.array:
+    with open(filename, 'r') as f:
+        lines = [line.strip() for line in f.readlines()]
+
+    n = lines[0]
+    rows = lines[1:-1]
+    matrix = []
+    for row in rows:
+        matrix.append(row.split())
+
+    return matrix
+
+
 def get_graph_from_multigraph(multigraph: MultiDiGraph) -> np.array:
     graph = multigraph.adjacency_matrix.copy()
     graph[graph > 1] = 1
