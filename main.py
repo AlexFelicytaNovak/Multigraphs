@@ -20,8 +20,8 @@ if __name__ == '__main__':
         # with open(str(sys.argv[1]), 'r') as f:
         g1 = MultiDiGraph(read_graph_from_file(args.graph1))
         g1.print()
-        graph = get_graph_from_multigraph(g1)
-        undirected_graph = get_undirected_graph_from_directed_graph(MultiDiGraph(graph))
+        graph = get_graph_from_multigraph(g1.adjacency_matrix)
+        undirected_graph = get_undirected_graph_from_directed_graph(graph)
 
     else:
         print('No graph data file given!')
