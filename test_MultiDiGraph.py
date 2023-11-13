@@ -147,8 +147,8 @@ class TestMultiDiGraphInstanceMethods(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
-    def test_maximal_cliques_with_exhaustive_maximum_clique(self):
-        """Should return correct maximal clique - entire input graph."""
+    def test_maximum_cliques_with_exhaustive_maximum_clique(self):
+        """Should return correct maximum clique - entire input graph."""
 
         A = np.array([
             [0, 1, 1, 3],
@@ -157,9 +157,46 @@ class TestMultiDiGraphInstanceMethods(unittest.TestCase):
             [1, 1, 1, 0]])
         mg = MultiDiGraph(matrix=A)
         expected = set([frozenset([0, 1, 2, 3])])
-        result = mg.maximal_cliques()
+        result = mg.maximum_cliques()
         self.assertEqual(result, expected)
 
+
+    def test_maximum_clique_with_multiple_maximum_cliques(self):
+        """Should return the set  with 2 maximum cliques.
+        """
+
+        A = np.array([
+            [0, 0, 0, 0, 1, 1, 1, 0],
+            [0, 0, 1, 1, 0, 0, 0, 1],
+            [0, 1, 0, 2, 1, 0, 0, 2],
+            [0, 3, 1, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 3, 1, 0],
+            [1, 0, 0, 0, 1, 0, 1, 0],
+            [1, 0, 0, 0, 1, 3, 0, 0],
+            [0, 1, 1, 1, 0, 0, 0, 0]])
+        mg = MultiDiGraph(matrix=A)
+        expected = set([frozenset([7, 1, 2, 3]), frozenset([0, 4, 5, 6])])
+        result = mg.maximum_cliques()
+        self.assertEqual(result, expected)
+
+
+    def test_maximum_clique_with_edges(self):
+        """Should return correct maximum clique for a graph with 2 maximal cliques
+        with the same number of nodes, but different number of edges."""
+
+        A = np.array([
+            [0, 0, 0, 0, 1, 1, 1, 0],
+            [0, 0, 1, 1, 0, 0, 0, 1],
+            [0, 1, 0, 2, 1, 0, 0, 2],
+            [0, 3, 1, 0, 0, 0, 0, 2],
+            [1, 0, 0, 0, 0, 3, 1, 0],
+            [1, 0, 0, 0, 1, 0, 1, 0],
+            [1, 0, 0, 0, 1, 3, 0, 0],
+            [0, 1, 1, 1, 0, 0, 0, 0]])
+        mg = MultiDiGraph(matrix=A)
+        expected = set([frozenset([7, 1, 2, 3])])
+        result = mg.maximum_cliques()
+        self.assertEqual(result, expected)
 
 if __name__ == '__main__':
     unittest.main()

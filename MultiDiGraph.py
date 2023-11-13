@@ -89,9 +89,8 @@ class MultiDiGraph:
         raise NotImplementedError
 
 
-    # TODO
-    def maximal_cliques(self) -> Set[FrozenSet[int]]:
-        """Returns the maximal cliques based on node count first, edge count second.
+    def maximum_cliques(self) -> Set[FrozenSet[int]]:
+        """Returns the maximum cliques based on node count first, edge count second.
 
         Algorithm:
         1. Extract from adjacency matrix embedded undirected graph. Edge pair
@@ -103,13 +102,6 @@ class MultiDiGraph:
         # Extract the embedded undirected graph
         undir_g = MultiDiGraph.get_undirected_graph_from_directed_graph(
                 MultiDiGraph.get_graph_from_multigraph(self.adjacency_matrix))
-
-        # Put ones on the diagonal
-        #for i in range(len(undir_g)):
-        #    undir_g[i, i] = 1
-
-        # print('BK Input:')
-        # print(undir_g)
 
         # Find maximum clique(s) in the embedded graph
         # TODO: use 2nd version of Bron-Kerbosch for efficiency 
