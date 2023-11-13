@@ -22,7 +22,7 @@ if __name__ == '__main__':
         g1.print()
         graph = MultiDiGraph.get_graph_from_multigraph(g1.adjacency_matrix)
         undirected_graph = MultiDiGraph.get_undirected_graph_from_directed_graph(graph)
-        g1.maximal_cliques()
+        print(g1.maximal_cliques())
 
     else:
         print('No graph data file given!')

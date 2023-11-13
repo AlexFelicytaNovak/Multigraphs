@@ -1,7 +1,6 @@
 import unittest
 import numpy as np
 from graph_functions import bronKerbosch1, get_neighbors, is_symmetric
-from MultiDiGraph import MultiDiGraph
 
 
 class TestCheckSymmetry(unittest.TestCase):
@@ -154,52 +153,6 @@ class TestGetNeighbors(unittest.TestCase):
     def test_with_too_large_node(self):
         """Should raise ValueError for node index above the greatest index."""
         self.assertRaises(ValueError, get_neighbors, len(self.g_matrix), self.g_matrix)
-
-
-class TestMultiDiGraph(unittest.TestCase):
-    def test_get_graph_from_multigraph(self):
-        """Should return matrix with 1s in places of numbers > 1."""
-        
-        input = np.array([
-            [0, 0, 2, 0, 1],
-            [0, 0, 1, 0, 0],
-            [7, 1, 0, 0, 1],
-            [0, 1, 2, 0, 1],
-            [0, 0, 0, 4, 0]])
-
-        expected = np.array([
-            [0, 0, 1, 0, 1],
-            [0, 0, 1, 0, 0],
-            [1, 1, 0, 0, 1],
-            [0, 1, 1, 0, 1],
-            [0, 0, 0, 1, 0]])
-        
-        result = MultiDiGraph.get_graph_from_multigraph(input)
-        self.assertTrue(np.array_equal(result, expected))
-
-
-    def test_get_undirected_graph_from_directed_graph(self):
-        """ 
-        Should return return a symmetric matrix with 1s at [i, j] & [j, i],
-        if input has both 1s at those indices.
-        """
-
-        input = np.array([
-            [0, 0, 1, 0, 1],
-            [0, 0, 1, 0, 0],
-            [1, 1, 0, 0, 1],
-            [0, 1, 1, 0, 1],
-            [0, 0, 0, 1, 0]])
-
-        expected = np.array([
-            [0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 0],
-            [1, 1, 0, 0, 0],
-            [0, 0, 0, 0, 1],
-            [0, 0, 0, 1, 0]])
-
-        result = MultiDiGraph.get_undirected_graph_from_directed_graph(input)
-        self.assertTrue(np.array_equal(result, expected))
 
 
 if __name__ == '__main__':

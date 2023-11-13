@@ -12,14 +12,13 @@ def read_graph_from_file(filename: str) -> np.array:
     for row in rows:
         matrix.append(row.split())
 
-    return matrix
+    return np.array(matrix)
 
 
 def is_symmetric(matrix: np.array) -> bool:
     """Check if given matrix is symmetric."""
     return (matrix.shape[0] == matrix.shape[1] and 
             np.all(np.abs(matrix - np.transpose(matrix)) == 0))
-
 
 
 def get_neighbors(node: int, matrix: np.array) -> Set[int]:
