@@ -165,6 +165,16 @@ class TestMultiDiGraphInstanceMethods(unittest.TestCase):
         result = mg.maximal_cliques()
         self.assertEqual(result, expected)
 
+    def test_maximal_cliques_medium_sized(self):
+        """Should return correct maximum clique for a graph with 3 maximal cliques."""
+
+        A = np.ones(shape=(30, 30))
+        for i in range(30):
+            A[i][i] = 0
+        mg = MultiDiGraph(matrix=A)
+        expected = set([frozenset(range(30))])
+        result = mg.maximal_cliques()
+        self.assertEqual(result, expected)
 
     def test_maximal_cliques_with_no_edges(self):
         """Should return set of singletons for graph with no edges."""
@@ -230,6 +240,7 @@ class TestMultiDiGraphInstanceMethods(unittest.TestCase):
         expected = set([frozenset([7, 1, 2, 3])])
         result = mg.maximum_cliques()
         self.assertEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
