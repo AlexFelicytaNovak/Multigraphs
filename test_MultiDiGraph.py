@@ -147,6 +147,39 @@ class TestMultiDiGraphInstanceMethods(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
+    def test_maximal_cliques(self):
+        """Should return correct maximum clique for a graph with 3 maximal cliques."""
+
+        A = np.array([
+            [0, 0, 0, 0, 1, 1, 1, 0],
+            [0, 0, 1, 1, 0, 0, 0, 1],
+            [0, 1, 0, 2, 1, 0, 0, 2],
+            [0, 3, 1, 0, 0, 0, 0, 2],
+            [1, 0, 1, 0, 0, 3, 1, 0],
+            [1, 0, 0, 0, 1, 0, 1, 0],
+            [1, 0, 0, 0, 1, 3, 0, 0],
+            [0, 1, 1, 1, 0, 0, 0, 0]])
+        mg = MultiDiGraph(matrix=A)
+        expected = set([frozenset([7, 1, 2, 3]), frozenset([0, 4, 5, 6]),
+                        frozenset([2, 4])])
+        result = mg.maximal_cliques()
+        self.assertEqual(result, expected)
+
+
+    def test_maximal_cliques_with_no_edges(self):
+        """Should return set of singletons for graph with no edges."""
+
+        A = np.array([
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
+            ])
+        mg = MultiDiGraph(matrix=A)
+        expected = set([frozenset([2]), frozenset([1]), frozenset([0])])
+        result = mg.maximal_cliques()
+        self.assertEqual(result, expected)
+
+
     def test_maximum_cliques_with_exhaustive_maximum_clique(self):
         """Should return correct maximum clique - entire input graph."""
 

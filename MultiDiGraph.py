@@ -93,19 +93,11 @@ class MultiDiGraph:
         """Returns the maximum cliques based on node count first, edge count second.
 
         Algorithm:
-        1. Extract from adjacency matrix embedded undirected graph. Edge pair
-        (x -> y, y -> x) in the directed graph corresponds to (x -- y) in the
-        undirected graph.
-        2. Find the maximum clique(s) in the embedded graph (using bron-Kerbosch V.1).
+        1. Find the maximal clique(s) in the embedded graph (using bron-Kerbosch V.1).
+        2. Filter for maximum cliques in the embedded graph.
         3. Filter for the ones that give the highest number of edges.
         """
-        # Extract the embedded undirected graph
-        undir_g = MultiDiGraph.get_undirected_graph_from_directed_graph(
-                MultiDiGraph.get_graph_from_multigraph(self.adjacency_matrix))
-
-        # Find maximum clique(s) in the embedded graph
-        # TODO: use 2nd version of Bron-Kerbosch for efficiency 
-        cliques = bronKerbosch1(set(), set(range(len(undir_g))), set(), undir_g)
+        cliques = self.maximal_cliques()
 
         # Extract maximum clique(s)
         max_c_size = max(map(lambda set: len(set), cliques))
@@ -129,4 +121,23 @@ class MultiDiGraph:
             # print(f'Current candidates {max_candidates}')
 
         return max_candidates
+
+
+    def maximal_cliques(self) -> Set[FrozenSet[int]]:
+        """Returns all maximal cliques from a multigraph.
+
+        Algorithm:
+        1. Extract from adjacency matrix embedded undirected graph. Edge pair
+        (x -> y, y -> x) in the directed graph corresponds to (x -- y) in the
+        undirected graph.
+        2. Find the maximal clique(s) in the embedded graph (using bron-Kerbosch V.1).
+        """
+        # Extract the embedded undirected graph
+        undir_g = MultiDiGraph.get_undirected_graph_from_directed_graph(
+                MultiDiGraph.get_graph_from_multigraph(self.adjacency_matrix))
+
+        # Find maximal cliques in the embedded graph
+        # TODO: use 2nd version of Bron-Kerbosch for efficiency 
+        cliques = bronKerbosch1(set(), set(range(len(undir_g))), set(), undir_g)
+        return cliques
 
