@@ -1,3 +1,4 @@
+import random
 import numpy as np
 from typing import FrozenSet, Set
 
@@ -95,3 +96,33 @@ def extend_V2(old: np.array, ne: int, ce: int): #-> ?
     # Determine each counter value and look for minimum
     for 
 """
+
+
+def get_graph_with_n_nodes_and_m_edges(n: int, m: int) -> np.array:
+    """Returns a matrix of a graph with n nodes and m edges."""
+    if n * n - n < m or m < 0 or n < 0:
+        raise ValueError(f"Graph with {m} edges and {n} nodes cannot be created.")
+
+    matrix = np.zeros(shape=(n, n))
+    for edge in range(m):
+        i = random.randint(0, n - 1)
+        j = random.randint(0, n - 1)
+
+        while i == j or matrix[i][j] == 1:
+            i = random.randint(0, n - 1)
+            j = random.randint(0, n - 1)
+
+        matrix[i][j] = 1
+
+    return matrix
+
+
+def get_multigraph_from_graph(graph: np.array, max_num_of_edges: int) -> np.array:
+    """Returns a matrix of a multigraph generated based on the given graph (multiplied edges)."""
+    matrix = np.copy(graph)
+    for i in range(len(matrix)):
+        for j in range(len(matrix)):
+            if matrix[i][j] == 1:
+                matrix[i][j] = random.randint(1, max_num_of_edges)
+
+    return matrix

@@ -28,7 +28,7 @@ class TestMultiDiGraphStaticMethods(unittest.TestCase):
 
     def test_get_undirected_graph_from_directed_graph(self):
         """ 
-        Should return return a symmetric matrix with 1s at [i, j] & [j, i],
+        Should return a symmetric matrix with 1s at [i, j] & [j, i],
         if input has both 1s at those indices.
         """
 
@@ -114,6 +114,43 @@ class TestMultiDiGraphStaticMethods(unittest.TestCase):
             [0, 0, 0, 4, 0]])
         expected = 21
         result = MultiDiGraph.count_edges(input)
+        self.assertEqual(result, expected)
+
+
+    def test_get_list_of_edges_for_matrix_with_no_edges(self):
+        """Should return empty list for matrix with no edges."""
+        input = np.zeros(shape=(6, 6))
+        expected = []
+        result = MultiDiGraph.get_list_of_edges(input)
+        self.assertEqual(result, expected)
+
+
+    def test_get_list_of_edges_for_empty_matrix(self):
+        """Should return empty list for empty matrix."""
+        input = np.zeros(shape=(0))
+        expected = []
+        result = MultiDiGraph.get_list_of_edges(input)
+        self.assertEqual(result, expected)
+
+
+    def test_get_list_of_edges_regular_matrix(self):
+        """Should return correct edges for multigraph matrix."""
+        input = np.array([
+            [0, 0, 2, 0],
+            [0, 0, 1, 0],
+            [7, 1, 0, 1],
+            [0, 1, 2, 0]])
+        expected = [
+            {'v0': 0, 'vf': 2},
+            {'v0': 1, 'vf': 2},
+            {'v0': 2, 'vf': 0},
+            {'v0': 2, 'vf': 1},
+            {'v0': 2, 'vf': 3},
+            {'v0': 3, 'vf': 1},
+            {'v0': 3, 'vf': 2}
+        ]
+        result = MultiDiGraph.get_list_of_edges(input)
+
         self.assertEqual(result, expected)
 
 

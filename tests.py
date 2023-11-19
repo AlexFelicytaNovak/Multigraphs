@@ -1,6 +1,9 @@
 import unittest
 import numpy as np
-from graph_functions import bronKerbosch1, get_neighbors, is_symmetric
+from MultiDiGraph import MultiDiGraph
+from graph_functions import (bronKerbosch1, get_neighbors, is_symmetric, get_graph_with_n_nodes_and_m_edges,
+                             get_multigraph_from_graph)
+from maximal_subgraph import find_maximal_subgraphs
 
 
 class TestCheckSymmetry(unittest.TestCase):
@@ -36,6 +39,36 @@ class TestCheckSymmetry(unittest.TestCase):
             [0, 0, 0, 1, 0, 0],
             [0, 0, 0, 0, 0, 0]])
         self.assertFalse(is_symmetric(input))
+
+
+class TestCheckGeneratingGraphs(unittest.TestCase):
+    def setUp(self) -> None:
+        self.graph = np.array([
+            [0, 1, 1],
+            [0, 0, 0],
+            [1, 0, 0]
+        ])
+
+    def test_get_graph_incorrect_num_of_edges(self):
+        """Should raise ValueError for incorrect number of edges."""
+        with self.assertRaises(ValueError):
+            get_graph_with_n_nodes_and_m_edges(5, 22)
+
+    def test_get_graph_incorrect_num_of_nodes(self):
+        """Should raise ValueError for incorrect number of nodes."""
+        with self.assertRaises(ValueError):
+            get_graph_with_n_nodes_and_m_edges(-2, 10)
+
+    def test_get_graph(self):
+        """Should return a graph with correct number of edges."""
+        expected_num_of_edges = 15
+        result = get_graph_with_n_nodes_and_m_edges(5, expected_num_of_edges)
+        self.assertEqual(MultiDiGraph(result).size[1], expected_num_of_edges)
+
+    def test_get_multigraph(self):
+        """Should return a multigraph with correct number of edges."""
+        result = get_multigraph_from_graph(self.graph, 5)
+        self.assertTrue(3 <= MultiDiGraph(result).size[1] <= 3*5)
 
 
 class TestBronKerbosch1(unittest.TestCase):
@@ -153,6 +186,132 @@ class TestGetNeighbors(unittest.TestCase):
     def test_with_too_large_node(self):
         """Should raise ValueError for node index above the greatest index."""
         self.assertRaises(ValueError, get_neighbors, len(self.g_matrix), self.g_matrix)
+
+
+class TestMaximalSubgraph(unittest.TestCase):
+    def setUp(self) -> None:
+        self.multidigraph_3_no_edges = MultiDiGraph(np.array([
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ]))
+
+        self.multidigraph_3_1 = MultiDiGraph(np.array([
+            [0, 1, 0],
+            [1, 0, 2],
+            [1, 0, 0]
+        ]))
+
+        self.multidigraph_3_2 = MultiDiGraph(np.array([
+            [0, 2, 1],
+            [1, 0, 0],
+            [0, 5, 0]
+        ]))
+
+        self.multidigraph_6_1 = MultiDiGraph(np.array([
+            [0, 1, 1, 0, 1, 0],
+            [0, 0, 1, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0]
+        ]))
+
+        self.multidigraph_6_2 = MultiDiGraph(np.array([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 1, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0]
+        ]))
+
+        self.multidigraph_triangular = MultiDiGraph(np.array([
+            [0, 1, 1],
+            [1, 0, 1],
+            [1, 1, 0]
+        ]))
+
+        self.multidigraph_y = MultiDiGraph(np.array([
+            [0, 1, 1, 1],
+            [1, 0, 0, 0],
+            [1, 0, 0, 0],
+            [1, 0, 0, 0],
+        ]))
+
+        self.multidigraph_triangular_extended = MultiDiGraph(np.array([
+            [0, 1, 1, 1],
+            [1, 0, 1, 0],
+            [1, 1, 0, 0],
+            [1, 0, 0, 0]
+        ]))
+
+        self.multidigraph_y_extended = MultiDiGraph(np.array([
+            [0, 1, 1, 1, 0],
+            [1, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0],
+        ]))
+
+    def test_same_graph(self):
+        """Should return the same subgraph as the given graph."""
+        expected = self.multidigraph_3_1.adjacency_matrix
+        result = find_maximal_subgraphs(self.multidigraph_3_1, self.multidigraph_3_1)
+        self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+
+    def test_connected_maximal_subgraph(self):
+        """Should return connected subgraph."""
+        expected = np.array([
+            [0, 1, 0],
+            [0, 0, 2],
+            [1, 0, 0]
+        ])
+        result = find_maximal_subgraphs(self.multidigraph_3_1, self.multidigraph_3_2)
+        self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+
+    def test_disconnected_maximal_subgraph(self):
+        """Should return disconnected subgraph."""
+        expected = np.array([
+            [0, 1, 1, 0, 0, 0],
+            [0, 0, 1, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0]
+        ])
+        result = find_maximal_subgraphs(self.multidigraph_6_1, self.multidigraph_6_2)
+        self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+
+    def test_no_subgraph(self):
+        """Should not return any subgraph."""
+        expected = None
+        result = find_maximal_subgraphs(self.multidigraph_3_1, self.multidigraph_3_no_edges)
+        print(result)
+        self.assertEqual(result, expected)
+
+    def test_triangular_y_subgraph(self):
+        """Should return correct subgraphs."""
+        # only triangular and y
+        expected = np.array([
+            [0, 1, 1],
+            [1, 0, 0],
+            [1, 0, 0],
+        ])
+        result = find_maximal_subgraphs(self.multidigraph_triangular, self.multidigraph_y)
+        self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+
+    def test_triangular_y_extended_subgraph(self):
+        """Should return correct subgraphs."""
+        # triangular and y but extended -> with additional edge
+        expected = np.array([
+            [0, 0, 1, 1],
+            [0, 0, 1, 0],
+            [1, 1, 0, 0],
+            [1, 0, 0, 0],
+        ])
+        result = find_maximal_subgraphs(self.multidigraph_triangular_extended, self.multidigraph_y_extended)
+        self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
 
 
 if __name__ == '__main__':

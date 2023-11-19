@@ -1,6 +1,7 @@
 import argparse
 
 from graph_functions import read_graph_from_file
+from maximal_subgraph import find_maximal_subgraphs
 from MultiDiGraph import MultiDiGraph
 
 if __name__ == '__main__':
@@ -47,4 +48,7 @@ if __name__ == '__main__':
 
     if args.subgraph:
         print("Maximal subgraph for graph 1 and graph 2:")
+        maximal_subgraphs = find_maximal_subgraphs(g1, g2)
+        print(f"number of maximal subgraphs: {len(maximal_subgraphs)}")
+        maximal_subgraphs[0].print()
         pass
