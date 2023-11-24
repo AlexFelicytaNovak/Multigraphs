@@ -149,16 +149,16 @@ def get_matrix_from_edges(subgraph_edges_map: list[dict], graph_num: int) -> np.
     return matrix
 
 
-def find_maximal_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph) -> Union[np.array, None]:
-    """Returns maximal subgraphs of two graphs based on node count first, edge count second.
+def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph) -> Union[list[np.array], None]:
+    """Returns maximum subgraphs of two graphs based on node count first, edge count second.
 
     Algorithm:
     1. Find edge product graph based on graphs g1 nad g2 (ignoring all 'extra' edges from input multigraphs)
     2. Find maximal cliques for the edge product graph
     3. Iterate over maximal cliques, for each clique:
         a) calculate the corresponding subgraph in g1/g2
-           - if it is a duplicate of any current maximal subgraphs skip this clique
-        b) calculate the multisubgraph and update the maximal subgraph list
+           - if it is a duplicate of any current maximum subgraphs skip this clique
+        b) calculate the multisubgraph and update the maximum subgraph list
     """
 
     # get graphs from multigraphs
@@ -181,16 +181,17 @@ def find_maximal_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
     maximal_cliques = edge_graph_product.maximal_cliques()
     t2 = perf_counter()
     print(f"finding maximal cliques: {t2 - t1}")
+    print(f"num of maximal cliques: {len(maximal_cliques)}")
 
-    maximal_subgraphs = []
+    maximum_subgraphs = []
     max_size = (0, 0)
 
     # iterate through all cliques
     for clique in maximal_cliques:
         subgraph_edges_map = get_subgraph_edges(clique, di_graph1_edges, di_graph2_edges)
 
-        for maximal_subgraph in maximal_subgraphs:  # check if the subgraph is not a duplicate
-            if any(x != y for x, y in zip(maximal_subgraph['subgraph_edge_map'], subgraph_edges_map)):
+        for maximum_subgraph in maximum_subgraphs:  # check if the subgraph is not a duplicate
+            if any(x != y for x, y in zip(maximum_subgraph['subgraph_edge_map'], subgraph_edges_map)):
                 continue
 
         multisubgraph_edges_map = get_multisubgraph_edges(subgraph_edges_map, multi_di_graph1.adjacency_matrix,
@@ -202,11 +203,11 @@ def find_maximal_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
         if multi_di_subgraph.size != multi_di_subgraph2.size:  # for triangular and y subgraphs
             continue
 
-        # update the maximal subgraphs list
+        # update the maximum subgraphs list
         if multi_di_subgraph.size[0] > max_size[0] or \
                 (multi_di_subgraph.size[0] == max_size[0] and multi_di_subgraph.size[1] > max_size[1]):
-            maximal_subgraphs.clear()
-            maximal_subgraphs.append({
+            maximum_subgraphs.clear()
+            maximum_subgraphs.append({
                 'subgraph_edge_map': subgraph_edges_map,
                 'multisubgraph_edge_map': multisubgraph_edges_map,
                 'multi_di_subgraph': multi_di_subgraph
@@ -214,13 +215,13 @@ def find_maximal_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
             max_size = multi_di_subgraph.size
 
         if multi_di_subgraph.size == max_size:
-            maximal_subgraphs.append({
+            maximum_subgraphs.append({
                 'subgraph_edge_map': subgraph_edges_map,
                 'multisubgraph_edge_map': multisubgraph_edges_map,
                 'multi_di_subgraph': multi_di_subgraph
             })
 
     result = []
-    for maximal_subgraph in maximal_subgraphs:
-        result.append(maximal_subgraph['multi_di_subgraph'])
+    for maximum_subgraph in maximum_subgraphs:
+        result.append(maximum_subgraph['multi_di_subgraph'])
     return result
