@@ -1,10 +1,10 @@
-from typing import Set, FrozenSet, Tuple, Union, cast
+from typing import Set, FrozenSet, Tuple, Union, List, cast
 try:
     from typing import Literal # Since Python 3.8
 except ImportError:
     from typing_extensions import Literal # Before Python 3.8
 import numpy as np
-from graph_functions import bronKerbosch1
+from graph_functions import bronKerbosch1, greedy_single_maximal_clique
 
 
 class MultiDiGraph:
@@ -37,7 +37,7 @@ class MultiDiGraph:
         return np.sum(matrix)
 
     @staticmethod
-    def get_list_of_edges(matrix: np.array) -> list[dict]:
+    def get_list_of_edges(matrix: np.array) -> List[dict]:
         """Returns the list of edges for a matrix."""
         edges = []
         for i in range(len(matrix)):
@@ -100,9 +100,20 @@ class MultiDiGraph:
         raise NotImplementedError
     
 
-    # TODO
-    def approx_maximal_clique(self):
-        raise NotImplementedError
+    def approx_maximal_cliques(self) -> Set[FrozenSet[int]]:
+        """Returns the approximation of maximum clique."""
+        cliques = set()
+        nodes, _ = self._size
+
+        # Extract the embedded undirected graph O(n^2)
+        undir_g = MultiDiGraph.get_undirected_graph_from_directed_graph(
+                MultiDiGraph.get_graph_from_multigraph(self.adjacency_matrix))
+
+        # For each vertex calculate one maximal clique that contains it O(n^3)
+        for vertex in range(nodes):
+            cliques.add(greedy_single_maximal_clique(undir_g, vertex))
+        
+        return cliques
 
 
     def maximum_cliques(self) -> Set[FrozenSet[int]]:

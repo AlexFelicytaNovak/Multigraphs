@@ -1,7 +1,7 @@
 from time import perf_counter
 import numpy as np
 from MultiDiGraph import MultiDiGraph
-from typing import FrozenSet, Union
+from typing import FrozenSet, Union, List, Tuple
 
 
 def are_edge_pairs_isomorphic(e1: dict, f1: dict, e2: dict, f2: dict) -> bool:
@@ -67,7 +67,7 @@ def are_edge_pairs_isomorphic(e1: dict, f1: dict, e2: dict, f2: dict) -> bool:
     return False
 
 
-def get_edge_graph_product(g1_edges: list[dict], g2_edges: list[dict]) -> MultiDiGraph:
+def get_edge_graph_product(g1_edges: List[dict], g2_edges: List[dict]) -> MultiDiGraph:
     """Returns edge graph product based on the lists of edges of two graphs g1 and g2."""
     g1_edges_count = len(g1_edges)
     g2_edges_count = len(g2_edges)
@@ -94,7 +94,7 @@ def get_edge_graph_product(g1_edges: list[dict], g2_edges: list[dict]) -> MultiD
     return MultiDiGraph(edge_graph_product)
 
 
-def get_subgraph_edges(clique: FrozenSet[int], di_graph1_edges: list[dict], di_graph2_edges: list[dict]) -> list[dict]:
+def get_subgraph_edges(clique: FrozenSet[int], di_graph1_edges: List[dict], di_graph2_edges: List[dict]) -> List[dict]:
     """Returns a list with subgraph edge mapping for g1 and g2."""
     subgraph_edges_map = []
     di_graph2_edges_count = len(di_graph2_edges)
@@ -112,7 +112,7 @@ def get_subgraph_edges(clique: FrozenSet[int], di_graph1_edges: list[dict], di_g
 
 
 def get_multisubgraph_edges(
-        subgraph_edges_map: list[dict], multi_di_graph1: np.array, multi_di_graph2: np.array) -> list[dict]:
+        subgraph_edges_map: List[dict], multi_di_graph1: np.array, multi_di_graph2: np.array) -> List[dict]:
     """Returns a list with subgraph edge mapping for m1 and m2."""
     for edge in subgraph_edges_map:
         e_count = multi_di_graph1[edge['edge_g1']['v0']][edge['edge_g1']['vf']]
@@ -122,7 +122,7 @@ def get_multisubgraph_edges(
     return subgraph_edges_map
 
 
-def get_matrix_from_edges(subgraph_edges_map: list[dict], graph_num: int) -> np.array:
+def get_matrix_from_edges(subgraph_edges_map: List[dict], graph_num: int) -> np.array:
     """Returns a subgraph based on the given list of subgraph edges map."""
     subgraph_vertices = []
     for edge in subgraph_edges_map:
@@ -141,8 +141,7 @@ def get_matrix_from_edges(subgraph_edges_map: list[dict], graph_num: int) -> np.
     return matrix
 
 
-def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph, approximation: bool = False) -> \
-        (float, Union[list[np.array], None]):
+def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph) -> Tuple[float, Union[List[np.array], None]]:
     """Returns maximum subgraphs of two graphs based on node count first, edge count second.
 
     Algorithm:
