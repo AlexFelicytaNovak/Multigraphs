@@ -8,7 +8,7 @@ def read_graph_from_file(filename: str) -> np.array:
         lines = [line.strip() for line in f.readlines()]
 
     n = lines[0]
-    rows = lines[1:-1]
+    rows = lines[1:int(n)+1]
     matrix = []
     for row in rows:
         matrix.append(row.split())

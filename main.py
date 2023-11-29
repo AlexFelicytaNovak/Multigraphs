@@ -22,26 +22,29 @@ if __name__ == '__main__':
     # if len(sys.argv) == 2:
     if args.graph1:
         # with open(str(sys.argv[1]), 'r') as f:
+        print("MultiDiGraph 1:")
         g1 = MultiDiGraph(read_graph_from_file(args.graph1))
         g1.print()
-        graph = MultiDiGraph.get_graph_from_multigraph(g1.adjacency_matrix)
-        undirected_graph = MultiDiGraph.get_undirected_graph_from_directed_graph(graph)
-        print(g1.maximum_cliques())
+        # graph = MultiDiGraph.get_graph_from_multigraph(g1.adjacency_matrix)
+        # undirected_graph = MultiDiGraph.get_undirected_graph_from_directed_graph(graph)
+        # print(g1.maximum_cliques())
 
     else:
         print('No graph data file given!')
         exit()
 
     if args.clique:
-        print("Maximal clique for graph 1: ")
+        print("Maximum clique for graph 1: ")
+        print(g1.maximum_cliques())
         pass
 
     if args.approx_clique:
-        print("Maximal clique approximation for graph 1: ")
+        print("Maximum clique approximation for graph 1: ")
         pass
 
     if args.graph2:
         # with open(str(sys.argv[1]), 'r') as f:
+        print("MultiDiGraph 2:")
         g2 = MultiDiGraph(read_graph_from_file(args.graph2))
         g2.print()
     else:
@@ -66,4 +69,7 @@ if __name__ == '__main__':
 
     if args.approx_subgraph:
         print("Maximum subgraph approximation for graph 1 and graph 2:")
+        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximation=True)
+        print(f"number of maximum subgraphs: {len(maximum_subgraphs)}")
+        maximum_subgraphs[0].print()
         pass
