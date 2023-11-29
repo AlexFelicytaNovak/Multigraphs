@@ -7,7 +7,7 @@ from bcolors import bcolors
 
 class TestBenchmarkMultiDiGraph(unittest.TestCase):
 
-    def test_benchmark_maximum_cliques_1_to_20_nodes(self):
+    def test_benchmark_maximal_cliques_1_to_20_nodes(self):
         """Run benchmarks for MultiDiGraphs 1 to n nodes.
 
         Specify upper limit of nodes by setting n"""
