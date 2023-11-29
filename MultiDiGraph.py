@@ -36,24 +36,40 @@ class MultiDiGraph:
     def count_edges(matrix: np.array) -> int:
         return np.sum(matrix)
 
+    @staticmethod
+    def get_list_of_edges(matrix: np.array) -> list[dict]:
+        """Returns the list of edges for a matrix."""
+        edges = []
+        for i in range(len(matrix)):
+            for j in range(len(matrix)):
+                if matrix[i][j] >= 1:
+                    edges.append(
+                        {
+                            'v0': i,
+                            'vf': j
+                        }
+                    )
+        return edges
 
     @staticmethod
     def get_graph_from_multigraph(multi_di_graph: np.array) -> np.array:
+        """Returns a graph based on the given multigraph (no repeat edges)."""
         di_graph = multi_di_graph.copy()
         di_graph[di_graph > 1] = 1
-        # print(di_graph)
         return di_graph
 
 
     @staticmethod
     def get_undirected_graph_from_directed_graph(directed_graph: np.array) -> np.array:
+        """Returns an undirected graph based on the given directed graph (ignoring all edges v -> u,
+        where there isn't a corresponding edge u -> v).
+        """
         undirected_graph = directed_graph.copy()
-        for i in range(len(undirected_graph) - 1):  # TODO: if we can have loops end at len(undirected_graph)
-            for j in range(i+1, len(undirected_graph)):  # TODO: if we can have loops start from i
+        for i in range(len(undirected_graph) - 1):
+            for j in range(i+1, len(undirected_graph)):
                 if undirected_graph[i][j] != 1 or undirected_graph[j][i] != 1:
                     undirected_graph[i][j] = 0
                     undirected_graph[j][i] = 0
-        # print(undirected_graph)
         return undirected_graph
 
 
