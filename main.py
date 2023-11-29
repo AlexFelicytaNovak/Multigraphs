@@ -9,10 +9,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-g1', '--graph1')
     parser.add_argument('-c', '--clique', action='store_true')
+    parser.add_argument('-ac', '--approx_clique', action='store_true')
 
     parser.add_argument('-g2', '--graph2')
     parser.add_argument('-d', '--distance', action='store_true')
+    parser.add_argument('-ad', '--approx_distance', action='store_true')
     parser.add_argument('-s', '--subgraph', action='store_true')
+    parser.add_argument('-as', '--approx_subgraph', action='store_true')
 
     args = parser.parse_args()
 
@@ -33,12 +36,16 @@ if __name__ == '__main__':
         print("Maximal clique for graph 1: ")
         pass
 
+    if args.approx_clique:
+        print("Maximal clique approximation for graph 1: ")
+        pass
+
     if args.graph2:
         # with open(str(sys.argv[1]), 'r') as f:
         g2 = MultiDiGraph(read_graph_from_file(args.graph2))
         g2.print()
     else:
-        if args.distance or args.subgraph:
+        if args.distance or args.subgraph or args.approx_distance or args.approx_subgraph:
             print('No graph data file for 2nd graph given!')
         exit()
 
@@ -46,9 +53,17 @@ if __name__ == '__main__':
         print("Distance between graph 1 and graph 2:")
         pass
 
+    if args.approx_distance:
+        print("Distance approximation between graph 1 and graph 2:")
+        pass
+
     if args.subgraph:
         print("Maximum subgraph for graph 1 and graph 2:")
-        maximum_subgraphs = find_maximum_subgraphs(g1, g2)
+        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
         print(f"number of maximum subgraphs: {len(maximum_subgraphs)}")
         maximum_subgraphs[0].print()
+        pass
+
+    if args.approx_subgraph:
+        print("Maximum subgraph approximation for graph 1 and graph 2:")
         pass

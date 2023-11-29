@@ -68,7 +68,7 @@ class TestCheckGeneratingGraphs(unittest.TestCase):
     def test_get_multigraph(self):
         """Should return a multigraph with correct number of edges."""
         result = get_multigraph_from_graph(self.graph, 5)
-        self.assertTrue(3 <= MultiDiGraph(result).size[1] <= 3*5)
+        self.assertTrue(3 <= MultiDiGraph(result).size[1] <= 3 * 5)
 
 
 class TestBronKerbosch1(unittest.TestCase):
@@ -257,8 +257,9 @@ class TestMaximalSubgraph(unittest.TestCase):
     def test_same_graph(self):
         """Should return the same subgraph as the given graph."""
         expected = self.multidigraph_3_1.adjacency_matrix
-        result = find_maximum_subgraphs(self.multidigraph_3_1, self.multidigraph_3_1)
+        clique_finding_time, result = find_maximum_subgraphs(self.multidigraph_3_1, self.multidigraph_3_1)
         self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+        self.assertTrue(type(clique_finding_time) is float)
 
     def test_connected_maximum_subgraph(self):
         """Should return connected subgraph."""
@@ -267,8 +268,9 @@ class TestMaximalSubgraph(unittest.TestCase):
             [0, 0, 2],
             [1, 0, 0]
         ])
-        result = find_maximum_subgraphs(self.multidigraph_3_1, self.multidigraph_3_2)
+        clique_finding_time, result = find_maximum_subgraphs(self.multidigraph_3_1, self.multidigraph_3_2)
         self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+        self.assertTrue(type(clique_finding_time) is float)
 
     def test_disconnected_maximum_subgraph(self):
         """Should return disconnected subgraph."""
@@ -280,15 +282,16 @@ class TestMaximalSubgraph(unittest.TestCase):
             [0, 0, 0, 0, 0, 1],
             [0, 0, 0, 0, 0, 0]
         ])
-        result = find_maximum_subgraphs(self.multidigraph_6_1, self.multidigraph_6_2)
+        clique_finding_time, result = find_maximum_subgraphs(self.multidigraph_6_1, self.multidigraph_6_2)
         self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+        self.assertTrue(type(clique_finding_time) is float)
 
     def test_no_subgraph(self):
         """Should not return any subgraph."""
         expected = None
-        result = find_maximum_subgraphs(self.multidigraph_3_1, self.multidigraph_3_no_edges)
-        print(result)
+        clique_finding_time, result = find_maximum_subgraphs(self.multidigraph_3_1, self.multidigraph_3_no_edges)
         self.assertEqual(result, expected)
+        self.assertEqual(clique_finding_time, 0)
 
     def test_triangular_y_subgraph(self):
         """Should return correct subgraphs."""
@@ -298,8 +301,9 @@ class TestMaximalSubgraph(unittest.TestCase):
             [1, 0, 0],
             [1, 0, 0],
         ])
-        result = find_maximum_subgraphs(self.multidigraph_triangular, self.multidigraph_y)
+        clique_finding_time, result = find_maximum_subgraphs(self.multidigraph_triangular, self.multidigraph_y)
         self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+        self.assertTrue(type(clique_finding_time) is float)
 
     def test_triangular_y_extended_subgraph(self):
         """Should return correct subgraphs."""
@@ -310,8 +314,9 @@ class TestMaximalSubgraph(unittest.TestCase):
             [1, 1, 0, 0],
             [1, 0, 0, 0],
         ])
-        result = find_maximum_subgraphs(self.multidigraph_triangular_extended, self.multidigraph_y_extended)
+        clique_finding_time, result = find_maximum_subgraphs(self.multidigraph_triangular_extended, self.multidigraph_y_extended)
         self.assertTrue(any(np.array_equal(subgraph.adjacency_matrix, expected) for subgraph in result))
+        self.assertTrue(type(clique_finding_time) is float)
 
 
 if __name__ == '__main__':

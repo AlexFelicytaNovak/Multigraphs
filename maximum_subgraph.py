@@ -149,7 +149,8 @@ def get_matrix_from_edges(subgraph_edges_map: list[dict], graph_num: int) -> np.
     return matrix
 
 
-def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph) -> Union[list[np.array], None]:
+def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph) -> \
+        (float, Union[list[np.array], None]):
     """Returns maximum subgraphs of two graphs based on node count first, edge count second.
 
     Algorithm:
@@ -171,7 +172,7 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
 
     if not di_graph1_edges or not di_graph2_edges:
         print("Subgraph does not exist.")
-        return None
+        return 0, None
 
     # find edge graph product
     edge_graph_product = get_edge_graph_product(di_graph1_edges, di_graph2_edges)
@@ -180,8 +181,9 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
     t1 = perf_counter()
     maximal_cliques = edge_graph_product.maximal_cliques()
     t2 = perf_counter()
-    print(f"finding maximal cliques: {t2 - t1}")
-    print(f"num of maximal cliques: {len(maximal_cliques)}")
+    maximal_clique_finding_time = t2-t1
+    print(f"finding maximal cliques: {maximal_clique_finding_time}")
+    # print(f"num of maximal cliques: {len(maximal_cliques)}")
 
     maximum_subgraphs = []
     max_size = (0, 0)
@@ -224,4 +226,4 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
     result = []
     for maximum_subgraph in maximum_subgraphs:
         result.append(maximum_subgraph['multi_di_subgraph'])
-    return result
+    return maximal_clique_finding_time, result
