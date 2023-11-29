@@ -141,7 +141,7 @@ def get_matrix_from_edges(subgraph_edges_map: List[dict], graph_num: int) -> np.
     return matrix
 
 
-def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph) -> Tuple[float, Union[List[np.array], None]]:
+def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph, approximate: bool = False) -> Tuple[float, Union[List[np.array], None]]:
     """Returns maximum subgraphs of two graphs based on node count first, edge count second.
 
     Algorithm:
@@ -170,8 +170,8 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
 
     # get all maximal cliques
     t1 = perf_counter()
-    if approximation:
-        exit("approximation not implemented")
+    if approximate:
+        raise NotImplementedError
     else:
         maximal_cliques = edge_graph_product.maximal_cliques()
     t2 = perf_counter()
