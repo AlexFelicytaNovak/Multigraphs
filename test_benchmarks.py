@@ -76,6 +76,55 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         plt.savefig(f'benchmark_maximum_cliques.png')
         plt.show()
 
+
+    def test_benchmark_approx_maximal_cliques_1_to_n_nodes(self):
+        """Run benchmarks for MultiDiGraphs 1 to n nodes.
+
+        Specify upper limit of nodes by setting n"""
+        n = 200
+        benchmark_data = []
+
+        with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
+            for nodes in range(1, n):
+                print(f'======= BENCHMARK {nodes} NODES =======')
+                A = np.ones(shape=(nodes, nodes))
+                for i in range(nodes):
+                    A[i][i] = 0
+                print(' - Matrix initialized')
+                
+                mg = MultiDiGraph(matrix=A)
+                expected = set([frozenset(range(nodes))])
+                before = perf_counter()
+                result = mg.approx_maximal_cliques()
+                after = perf_counter()
+
+                self.assertEqual(result, expected)
+                print(f' - Case passed in {bcolors.WARNING}{after - before}{bcolors.ENDC} s.\n')
+
+                # log to file
+                f.write(f'{nodes},{after - before};\n')
+
+                benchmark_data.append({
+                    'time': after - before,
+                    'nodes': nodes
+                })
+
+        warnings.filterwarnings("ignore", category=MatplotlibDeprecationWarning)
+
+        nodes = [entry['nodes'] for entry in benchmark_data]
+        time = [entry['time'] for entry in benchmark_data]
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(nodes, time, label='finding approximate maximal cliques time')
+
+        plt.title('Finding Approximate Maximal Cliques Benchmark')
+        plt.xlabel('Number of Nodes')
+        plt.ylabel('Time (seconds)')
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+
+
     def test_benchmark_maximum_subgraph(self):
         """Run benchmarks for maximum subgraphs of MultiDiGraphs with 1 to n edges (edges counted in graphs).
 

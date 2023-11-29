@@ -3,6 +3,7 @@ import argparse
 from graph_functions import read_graph_from_file
 from maximum_subgraph import find_maximum_subgraphs
 from MultiDiGraph import MultiDiGraph
+from bcolors import bcolors
 
 if __name__ == '__main__':
 
@@ -26,7 +27,13 @@ if __name__ == '__main__':
         g1.print()
         graph = MultiDiGraph.get_graph_from_multigraph(g1.adjacency_matrix)
         undirected_graph = MultiDiGraph.get_undirected_graph_from_directed_graph(graph)
+        print(f'{bcolors.OKBLUE}Maximum cliques: {bcolors.ENDC}\n')
         print(g1.maximum_cliques())
+
+        print(f'{bcolors.OKBLUE}Maximal cliques: {bcolors.ENDC}')
+        print(g1.maximal_cliques())
+        print(f'{bcolors.OKBLUE}Maximal cliques approx: {bcolors.ENDC}')
+        print(g1.approx_maximal_cliques())
 
     else:
         print('No graph data file given!')

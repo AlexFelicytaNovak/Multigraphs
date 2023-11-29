@@ -126,3 +126,21 @@ def get_multigraph_from_graph(graph: np.array, max_num_of_edges: int) -> np.arra
                 matrix[i][j] = random.randint(1, max_num_of_edges)
 
     return matrix
+
+
+def greedy_single_maximal_clique(adjacency_matrix: np.array, starting_node: int) -> FrozenSet[int]:
+    """Returns a maximal clique containing the starting_node.
+
+    The order of adding nodes from the graph is random, thus it is not guaranteed that
+    the biggest maximal clique will be returned.
+    """
+    clique = set([starting_node])
+    nodes = list(range(len(adjacency_matrix)))
+    random.shuffle(nodes)
+    for node in nodes:
+        if node in clique:
+            continue
+        if all([adjacency_matrix[node, c_node] != 0 for c_node in clique]):
+            clique.add(node)
+    return frozenset(clique)
+
