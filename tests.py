@@ -188,7 +188,7 @@ class TestGetNeighbors(unittest.TestCase):
         self.assertRaises(ValueError, get_neighbors, len(self.g_matrix), self.g_matrix)
 
 
-class TestMaximalSubgraph(unittest.TestCase):
+class TestMaximumSubgraph(unittest.TestCase):
     def setUp(self) -> None:
         self.multidigraph_3_no_edges = MultiDiGraph(np.array([
             [0, 0, 0],

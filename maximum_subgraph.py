@@ -4,70 +4,62 @@ from MultiDiGraph import MultiDiGraph
 from typing import FrozenSet, Union
 
 
-def are_edge_pairs_isomorphic(e1: dict, e2: dict, f1: dict, f2: dict) -> bool:
+def are_edge_pairs_isomorphic(e1: dict, f1: dict, e2: dict, f2: dict) -> bool:
     """Returns true if pairs of edges e1-e2 and f1-f2 are isomorphic."""
 
     #  disconnected edges
     if (
-            e1['v0'] != e2['v0'] and
-            e1['v0'] != e2['vf'] and
-            e1['vf'] != e2['v0'] and
-            e1['vf'] != e2['vf'] and  # e1 and e2 are disconnected
+            e1['v0'] != f1['v0'] and
+            e1['v0'] != f1['vf'] and
+            e1['vf'] != f1['v0'] and
+            e1['vf'] != f1['vf'] and  # e1 and e2 are disconnected
 
-            f1['v0'] != f2['v0'] and
-            f1['v0'] != f2['vf'] and
-            f1['vf'] != f2['v0'] and
-            f1['vf'] != f2['vf']  # f1 and f2 are disconnected
+            e2['v0'] != f2['v0'] and
+            e2['v0'] != f2['vf'] and
+            e2['vf'] != f2['v0'] and
+            e2['vf'] != f2['vf']  # f1 and f2 are disconnected
     ):
         return True
 
     # connected through both vertices
     if (
-            e1['v0'] == e2['vf'] and
-            e1['vf'] == e2['v0'] and  # e1 and e2 have ends at the same vertices
+            e1['v0'] == f1['vf'] and
+            e1['vf'] == f1['v0'] and  # e1 and e2 have ends at the same vertices
 
-            f1['v0'] == f2['vf'] and
-            f1['vf'] == f2['v0']  # f1 and f2 have ends at the same vertices
+            e2['v0'] == f2['vf'] and
+            e2['vf'] == f2['v0']  # f1 and f2 have ends at the same vertices
     ):
         return True
 
     # connected through one vertex
     if (
             (
-                    e1['vf'] == e2['vf'] and
-                    e1['v0'] != e2['v0'] and
+                    e1['vf'] == f1['vf'] and
+                    e1['v0'] != f1['v0'] and
 
-                    f1['vf'] == f2['vf'] and
-                    f1['v0'] != f2['v0']
+                    e2['vf'] == f2['vf'] and
+                    e2['v0'] != f2['v0']
             ) or
             (
-                    e1['v0'] == e2['v0'] and
-                    e1['vf'] != e2['vf'] and
+                    e1['v0'] == f1['v0'] and
+                    e1['vf'] != f1['vf'] and
 
-                    f1['v0'] == f2['v0'] and
-                    f1['vf'] != f2['vf']
+                    e2['v0'] == f2['v0'] and
+                    e2['vf'] != f2['vf']
             ) or
             (
-                    (
-                            (
-                                    e1['vf'] == e2['v0'] and
-                                    e1['v0'] != e2['vf']
-                            ) or
-                            (
-                                    e1['v0'] == e2['vf'] and
-                                    e1['vf'] != e2['v0']
-                            )
-                    ) and
-                    (
-                            (
-                                    f1['vf'] == f2['v0'] and
-                                    f1['v0'] != f2['vf']
-                            ) or
-                            (
-                                    f1['v0'] == f2['vf'] and
-                                    f1['vf'] != f2['v0']
-                            )
-                    )
+                    e1['vf'] == f1['v0'] and
+                    e1['v0'] != f1['vf'] and
+
+                    e2['vf'] == f2['v0'] and
+                    e2['v0'] != f2['vf']
+            ) or
+            (
+                    e1['v0'] == f1['vf'] and
+                    e1['vf'] != f1['v0'] and
+
+                    e2['v0'] == f2['vf'] and
+                    e2['vf'] != f2['v0']
             )
     ):
         return True
@@ -182,7 +174,7 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
     maximal_cliques = edge_graph_product.maximal_cliques()
     t2 = perf_counter()
     maximal_clique_finding_time = t2-t1
-    print(f"finding maximal cliques: {maximal_clique_finding_time}")
+    # print(f"finding maximal cliques: {maximal_clique_finding_time}")
     # print(f"num of maximal cliques: {len(maximal_cliques)}")
 
     maximum_subgraphs = []
