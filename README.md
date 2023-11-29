@@ -3,6 +3,7 @@ Requirements:
 * Python 3.10 or newer
 
 Install dependencies:
+
 When in the root project directory
 ```bash
 $ python -m pip install -r requirements.txt
