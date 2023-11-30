@@ -18,6 +18,8 @@ class MultiDiGraph:
         self.adjacency_matrix = matrix.astype(int)
         # Removing isolated vertices in MultiDiGraph
         indecies = np.intersect1d(np.where(~self.adjacency_matrix.any(axis=0)), np.where(~self.adjacency_matrix.any(axis=1)))
+        if len(indecies) > 0:
+            print(f'Removing isolated vertices ({len(indecies)}) from multigraph')
         self.adjacency_matrix = np.delete(self.adjacency_matrix, indecies, axis=0)
         self.adjacency_matrix = np.delete(self.adjacency_matrix, indecies, axis=1)
         self._size = (len(self.adjacency_matrix),
