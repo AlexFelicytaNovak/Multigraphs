@@ -16,6 +16,10 @@ class MultiDiGraph:
             raise ValueError(f'Invalid matrix for directed multigraph: {msg}')
 
         self.adjacency_matrix = matrix.astype(int)
+        # Removing isolated vertices in MultiDiGraph
+        indecies = np.intersect1d(np.where(~self.adjacency_matrix.any(axis=0)), np.where(~self.adjacency_matrix.any(axis=1)))
+        self.adjacency_matrix = np.delete(self.adjacency_matrix, indecies, axis=0)
+        self.adjacency_matrix = np.delete(self.adjacency_matrix, indecies, axis=1)
         self._size = (len(self.adjacency_matrix),
                       MultiDiGraph.count_edges(self.adjacency_matrix))
         # self._size = Tuple(len(matrix), MultiDiGraph.edgeCount()))
