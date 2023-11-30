@@ -1,6 +1,8 @@
 import argparse
 import math
 
+import numpy
+
 from graph_functions import read_graph_from_file
 from maximum_subgraph import find_maximum_subgraphs
 from MultiDiGraph import MultiDiGraph
@@ -66,8 +68,12 @@ if __name__ == '__main__':
         print("Distance between graph 1 and graph 2:")
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
         subgraph_size_norm = maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]
-        g1_size_norm = g1.size[0] + g1.size[1]
-        g2_size_norm = g2.size[0] + g2.size[1]
+
+        g1vertices = g1.size[0] - len(numpy.where(~g1.adjacency_matrix.any(axis=0)))
+        g2vertices = g2.size[0] - len(numpy.where(~g2.adjacency_matrix.any(axis=0)))
+
+        g1_size_norm = g1vertices + g1.size[1]
+        g2_size_norm = g2vertices + g2.size[1]
 
         print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
         pass
@@ -76,8 +82,12 @@ if __name__ == '__main__':
         print("Distance approximation between graph 1 and graph 2:")
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
         subgraph_size_norm = maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]
-        g1_size_norm = g1.size[0] + g1.size[1]
-        g2_size_norm = g2.size[0] + g2.size[1]
+
+        g1vertices = g1.size[0] - len(numpy.where(~g1.adjacency_matrix.any(axis=0)))
+        g2vertices = g2.size[0] - len(numpy.where(~g2.adjacency_matrix.any(axis=0)))
+
+        g1_size_norm = g1vertices + g1.size[1]
+        g2_size_norm = g2vertices + g2.size[1]
 
         print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
         pass
@@ -86,8 +96,12 @@ if __name__ == '__main__':
         print("Distance between graph 1 and graph 2:")
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
         subgraph_size_norm = math.sqrt(maximum_subgraphs[0].size[0]*maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]*maximum_subgraphs[0].size[1])
-        g1_size_norm = math.sqrt(g1.size[0]*g1.size[0] + g1.size[1]*g1.size[1])
-        g2_size_norm = math.sqrt(g2.size[0]*g2.size[0] + g2.size[1]*g2.size[1])
+
+        g1vertices = g1.size[0] - len(numpy.where(~g1.adjacency_matrix.any(axis=0)))
+        g2vertices = g2.size[0] - len(numpy.where(~g2.adjacency_matrix.any(axis=0)))
+
+        g1_size_norm = math.sqrt(g1vertices*g1vertices + g1.size[1]*g1.size[1])
+        g2_size_norm = math.sqrt(g2vertices*g2vertices + g2.size[1]*g2.size[1])
 
         print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
         pass
@@ -96,8 +110,12 @@ if __name__ == '__main__':
         print("Distance approximation between graph 1 and graph 2:")
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
         subgraph_size_norm = math.sqrt(maximum_subgraphs[0].size[0]*maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]*maximum_subgraphs[0].size[1])
-        g1_size_norm = math.sqrt(g1.size[0]*g1.size[0] + g1.size[1]*g1.size[1])
-        g2_size_norm = math.sqrt(g2.size[0]*g2.size[0] + g2.size[1]*g2.size[1])
+
+        g1vertices = g1.size[0] - len(numpy.where(~g1.adjacency_matrix.any(axis=0)))
+        g2vertices = g2.size[0] - len(numpy.where(~g2.adjacency_matrix.any(axis=0)))
+
+        g1_size_norm = math.sqrt(g1vertices * g1vertices + g1.size[1] * g1.size[1])
+        g2_size_norm = math.sqrt(g2vertices * g2vertices + g2.size[1] * g2.size[1])
 
         print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
         pass
