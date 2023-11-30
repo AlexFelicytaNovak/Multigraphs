@@ -1,4 +1,5 @@
 import argparse
+import math
 
 from graph_functions import read_graph_from_file
 from maximum_subgraph import find_maximum_subgraphs
@@ -13,8 +14,10 @@ if __name__ == '__main__':
     parser.add_argument('-ac', '--approx_clique', action='store_true')
 
     parser.add_argument('-g2', '--graph2')
-    parser.add_argument('-d', '--distance', action='store_true')
-    parser.add_argument('-ad', '--approx_distance', action='store_true')
+    parser.add_argument('-d1', '--distance_l1', action='store_true')
+    parser.add_argument('-ad1', '--approx_distance_l1', action='store_true')
+    parser.add_argument('-d2', '--distance_l2', action='store_true')
+    parser.add_argument('-ad2', '--approx_distance_l2', action='store_true')
     parser.add_argument('-s', '--subgraph', action='store_true')
     parser.add_argument('-as', '--approx_subgraph', action='store_true')
 
@@ -59,12 +62,44 @@ if __name__ == '__main__':
             print('No graph data file for 2nd graph given!')
         exit()
 
-    if args.distance:
+    if args.distance_l1:
         print("Distance between graph 1 and graph 2:")
+        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
+        subgraph_size_norm = maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]
+        g1_size_norm = g1.size[0] + g1.size[1]
+        g2_size_norm = g2.size[0] + g2.size[1]
+
+        print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
         pass
 
-    if args.approx_distance:
+    if args.approx_distance_l1:
         print("Distance approximation between graph 1 and graph 2:")
+        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
+        subgraph_size_norm = maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]
+        g1_size_norm = g1.size[0] + g1.size[1]
+        g2_size_norm = g2.size[0] + g2.size[1]
+
+        print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
+        pass
+
+    if args.distance_l2:
+        print("Distance between graph 1 and graph 2:")
+        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
+        subgraph_size_norm = math.sqrt(maximum_subgraphs[0].size[0]*maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]*maximum_subgraphs[0].size[1])
+        g1_size_norm = math.sqrt(g1.size[0]*g1.size[0] + g1.size[1]*g1.size[1])
+        g2_size_norm = math.sqrt(g2.size[0]*g2.size[0] + g2.size[1]*g2.size[1])
+
+        print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
+        pass
+
+    if args.approx_distance_l2:
+        print("Distance approximation between graph 1 and graph 2:")
+        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
+        subgraph_size_norm = math.sqrt(maximum_subgraphs[0].size[0]*maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]*maximum_subgraphs[0].size[1])
+        g1_size_norm = math.sqrt(g1.size[0]*g1.size[0] + g1.size[1]*g1.size[1])
+        g2_size_norm = math.sqrt(g2.size[0]*g2.size[0] + g2.size[1]*g2.size[1])
+
+        print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
         pass
 
     if args.subgraph:
