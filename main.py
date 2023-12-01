@@ -1,6 +1,6 @@
 import argparse
 
-from graph_functions import read_graph_from_file
+from graph_functions import read_graph_from_file, print_clique_and_matrix
 from maximum_subgraph import find_maximum_subgraphs
 from MultiDiGraph import MultiDiGraph
 from bcolors import bcolors
@@ -30,11 +30,17 @@ if __name__ == '__main__':
         undirected_graph = MultiDiGraph.get_undirected_graph_from_directed_graph(graph)
 
         print(f'\n{bcolors.OKBLUE}Maximum cliques: {bcolors.ENDC}')
-        print(g1.maximum_cliques())
+        cliques = g1.maximum_cliques()
+        for c in cliques:
+            print_clique_and_matrix(g1.adjacency_matrix, c)
         print(f'{bcolors.OKBLUE}Maximal cliques: {bcolors.ENDC}')
-        print(g1.maximal_cliques())
+        cliques = g1.maximal_cliques()
+        for c in cliques:
+            print_clique_and_matrix(g1.adjacency_matrix, c)
         print(f'{bcolors.OKBLUE}Maximal cliques approx: {bcolors.ENDC}')
-        print(g1.approx_maximal_cliques())
+        cliques = g1.approx_maximal_cliques()
+        for c in cliques:
+            print_clique_and_matrix(g1.adjacency_matrix, c)
 
     else:
         print('No graph data file given!')

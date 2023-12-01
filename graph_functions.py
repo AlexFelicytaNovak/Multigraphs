@@ -1,6 +1,7 @@
 import random
 import numpy as np
 from typing import FrozenSet, Set
+import pprint
 
 
 def read_graph_from_file(filename: str) -> np.array:
@@ -144,3 +145,9 @@ def greedy_single_maximal_clique(adjacency_matrix: np.array, starting_node: int)
             clique.add(node)
     return frozenset(clique)
 
+def print_clique_and_matrix(graph_matrix: np.array, clique: FrozenSet[int]) -> None:
+    print(f"Vertex indices from original graph: {tuple(clique)}")
+    print()
+    print("Matrix of resultant graph:")
+    print(graph_matrix[np.ix_(list(clique), list(clique))])
+    print()
