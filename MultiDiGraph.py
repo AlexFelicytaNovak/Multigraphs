@@ -9,7 +9,7 @@ from graph_functions import bronKerbosch1, greedy_single_maximal_clique
 
 class MultiDiGraph:
 
-    def __init__(self, matrix: np.array):
+    def __init__(self, matrix: np.array, remove_isolated_vertices: bool = True):
         if not MultiDiGraph.is_valid_multidigraph_matrix(matrix):
             _, msg = cast(Tuple[bool, str],
                           (MultiDiGraph.is_valid_multidigraph_matrix(input)))
@@ -17,11 +17,12 @@ class MultiDiGraph:
 
         self.adjacency_matrix = matrix.astype(int)
         # Removing isolated vertices in MultiDiGraph
-        indecies = np.intersect1d(np.where(~self.adjacency_matrix.any(axis=0)), np.where(~self.adjacency_matrix.any(axis=1)))
-        if len(indecies) > 0:
-            print(f'Removing isolated vertices ({len(indecies)}) from multigraph')
-        self.adjacency_matrix = np.delete(self.adjacency_matrix, indecies, axis=0)
-        self.adjacency_matrix = np.delete(self.adjacency_matrix, indecies, axis=1)
+        if remove_isolated_vertices:
+            indecies = np.intersect1d(np.where(~self.adjacency_matrix.any(axis=0)), np.where(~self.adjacency_matrix.any(axis=1)))
+            if len(indecies) > 0:
+                print(f'Removing isolated vertices ({len(indecies)}) from multigraph')
+            self.adjacency_matrix = np.delete(self.adjacency_matrix, indecies, axis=0)
+            self.adjacency_matrix = np.delete(self.adjacency_matrix, indecies, axis=1)
         self._size = (len(self.adjacency_matrix),
                       MultiDiGraph.count_edges(self.adjacency_matrix))
         # self._size = Tuple(len(matrix), MultiDiGraph.edgeCount()))
@@ -104,7 +105,7 @@ class MultiDiGraph:
     @staticmethod
     def distance(source, destination):
         raise NotImplementedError
-    
+
 
     def approx_maximal_cliques(self) -> Set[FrozenSet[int]]:
         """Returns the approximation of maximum clique."""

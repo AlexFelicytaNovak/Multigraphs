@@ -136,6 +136,6 @@ if __name__ == '__main__':
 
     if args.approx_subgraph:
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
-        print(f"Maximum subgraph (1/{len(maximum_subgraphs)}) for graph 1 and graph 2:")
+        print(f"Maximum subgraph approximation (1/{len(maximum_subgraphs)}) for graph 1 and graph 2:")
         maximum_subgraphs[0].print()
         pass

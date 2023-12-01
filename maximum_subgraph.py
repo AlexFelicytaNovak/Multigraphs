@@ -91,7 +91,7 @@ def get_edge_graph_product(g1_edges: List[dict], g2_edges: List[dict]) -> MultiD
                         if are_edge_pairs_isomorphic(g1_edges[i], g1_edges[j], g2_edges[k], g2_edges[l]):
                             edge_graph_product[v0][vf] = edge_graph_product[vf][v0] = 1  # epg is undirected
 
-    return MultiDiGraph(edge_graph_product)
+    return MultiDiGraph(edge_graph_product, remove_isolated_vertices=False)
 
 
 def get_subgraph_edges(clique: FrozenSet[int], di_graph1_edges: List[dict], di_graph2_edges: List[dict]) -> List[dict]:
