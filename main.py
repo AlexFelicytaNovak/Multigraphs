@@ -59,7 +59,7 @@ if __name__ == '__main__':
         g2 = MultiDiGraph(read_graph_from_file(args.graph2))
         g2.print()
     else:
-        if args.distance or args.subgraph or args.approx_distance or args.approx_subgraph:
+        if args.distance_l1 or args.subgraph or args.approx_distance_l1 or args.approx_subgraph or args.distance_l2  or args.approx_distance_l2:
             print('No graph data file for 2nd graph given!')
         exit()
 
