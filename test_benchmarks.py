@@ -46,7 +46,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
                     A[i][i] = 0
                 print(' - Matrix initialized')
                 
-                mg = MultiDiGraph(matrix=A)
+                mg = MultiDiGraph(matrix=A, remove_isolated_vertices=False)
                 expected = set([frozenset(range(nodes))])
                 before = perf_counter()
                 result = mg.maximal_cliques()
