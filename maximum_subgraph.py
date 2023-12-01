@@ -171,7 +171,7 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
     # get all maximal cliques
     t1 = perf_counter()
     if approximate:
-        raise NotImplementedError
+        maximal_cliques = edge_graph_product.approx_maximal_cliques()
     else:
         maximal_cliques = edge_graph_product.maximal_cliques()
     t2 = perf_counter()

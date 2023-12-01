@@ -34,7 +34,12 @@ if __name__ == '__main__':
         graph = MultiDiGraph.get_graph_from_multigraph(g1.adjacency_matrix)
         undirected_graph = MultiDiGraph.get_undirected_graph_from_directed_graph(graph)
 
-        print(f'\n{bcolors.OKBLUE}Maximum cliques: {bcolors.ENDC}')
+    else:
+        print('No graph data file given!')
+        exit()
+
+    if args.clique:
+        print(f'\n{bcolors.OKBLUE}Maximum cliques for g1: {bcolors.ENDC}')
         cliques = g1.maximum_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
@@ -42,26 +47,15 @@ if __name__ == '__main__':
         cliques = g1.maximal_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
-        print(f'{bcolors.OKBLUE}Maximal cliques approx: {bcolors.ENDC}')
+
+    if args.approx_clique:
+        print(f'{bcolors.OKBLUE}Maximal cliques approx for g1: {bcolors.ENDC}')
         cliques = g1.approx_maximal_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
-
-    else:
-        print('No graph data file given!')
-        exit()
-
-    if args.clique:
-        print("Maximum clique for graph 1: ")
-        print(g1.maximum_cliques())
-        pass
-
-    if args.approx_clique:
-        print("Maximum clique approximation for graph 1: ")
         pass
 
     if args.graph2:
-        # with open(str(sys.argv[1]), 'r') as f:
         print("MultiDiGraph 2:")
         g2 = MultiDiGraph(read_graph_from_file(args.graph2))
         g2.print()
@@ -135,15 +129,13 @@ if __name__ == '__main__':
         pass
 
     if args.subgraph:
-        print("Maximum subgraph for graph 1 and graph 2:")
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
-        print(f"number of maximum subgraphs: {len(maximum_subgraphs)}")
+        print(f"Maximum subgraph (1/{len(maximum_subgraphs)}) for graph 1 and graph 2:")
         maximum_subgraphs[0].print()
         pass
 
     if args.approx_subgraph:
-        print("Maximum subgraph approximation for graph 1 and graph 2:")
-        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximation=True)
-        print(f"number of maximum subgraphs: {len(maximum_subgraphs)}")
+        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
+        print(f"Maximum subgraph (1/{len(maximum_subgraphs)}) for graph 1 and graph 2:")
         maximum_subgraphs[0].print()
         pass
