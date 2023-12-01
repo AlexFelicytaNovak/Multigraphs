@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     if args.approx_clique:
         print(f'{bcolors.OKBLUE}Maximum clique(s) approximation for graph 1:{bcolors.ENDC}')
-        cliques = g1.approx_maximal_cliques()
+        cliques = g1.approx_maximum_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
 
