@@ -91,7 +91,7 @@ def get_edge_graph_product(g1_edges: List[dict], g2_edges: List[dict]) -> MultiD
                         if are_edge_pairs_isomorphic(g1_edges[i], g1_edges[j], g2_edges[k], g2_edges[l]):
                             edge_graph_product[v0][vf] = edge_graph_product[vf][v0] = 1  # epg is undirected
 
-    return MultiDiGraph(edge_graph_product)
+    return MultiDiGraph(edge_graph_product, remove_isolated_vertices=False)
 
 
 def get_subgraph_edges(clique: FrozenSet[int], di_graph1_edges: List[dict], di_graph2_edges: List[dict]) -> List[dict]:
@@ -171,7 +171,7 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
     # get all maximal cliques
     t1 = perf_counter()
     if approximate:
-        raise NotImplementedError
+        maximal_cliques = edge_graph_product.approx_maximal_cliques()
     else:
         maximal_cliques = edge_graph_product.maximal_cliques()
     t2 = perf_counter()
@@ -186,6 +186,12 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
     for clique in maximal_cliques:
         subgraph_edges_map = get_subgraph_edges(clique, di_graph1_edges, di_graph2_edges)
 
+        di_subgraph = MultiDiGraph(get_matrix_from_edges(subgraph_edges_map, 1))
+        di_subgraph2 = MultiDiGraph(get_matrix_from_edges(subgraph_edges_map, 2))
+
+        if di_subgraph.size != di_subgraph2.size:  # for triangular and y subgraphs
+            continue
+
         for maximum_subgraph in maximum_subgraphs:  # check if the subgraph is not a duplicate
             if any(x != y for x, y in zip(maximum_subgraph['subgraph_edge_map'], subgraph_edges_map)):
                 continue
@@ -194,10 +200,7 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
                                                           multi_di_graph2.adjacency_matrix)
 
         multi_di_subgraph = MultiDiGraph(get_matrix_from_edges(multisubgraph_edges_map, 1))
-        multi_di_subgraph2 = MultiDiGraph(get_matrix_from_edges(multisubgraph_edges_map, 2))
-
-        if multi_di_subgraph.size != multi_di_subgraph2.size:  # for triangular and y subgraphs
-            continue
+        # multi_di_subgraph2 = MultiDiGraph(get_matrix_from_edges(multisubgraph_edges_map, 2))
 
         # update the maximum subgraphs list
         if multi_di_subgraph.size[0] > max_size[0] or \
