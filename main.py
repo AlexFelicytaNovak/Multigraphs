@@ -34,31 +34,38 @@ if __name__ == '__main__':
         graph = MultiDiGraph.get_graph_from_multigraph(g1.adjacency_matrix)
         undirected_graph = MultiDiGraph.get_undirected_graph_from_directed_graph(graph)
 
-        print(f'\n{bcolors.OKBLUE}Maximum cliques: {bcolors.ENDC}')
-        cliques = g1.maximum_cliques()
-        for c in cliques:
-            print_clique_and_matrix(g1.adjacency_matrix, c)
-        print(f'{bcolors.OKBLUE}Maximal cliques: {bcolors.ENDC}')
-        cliques = g1.maximal_cliques()
-        for c in cliques:
-            print_clique_and_matrix(g1.adjacency_matrix, c)
-        print(f'{bcolors.OKBLUE}Maximal cliques approx: {bcolors.ENDC}')
-        cliques = g1.approx_maximal_cliques()
-        for c in cliques:
-            print_clique_and_matrix(g1.adjacency_matrix, c)
+        # print(f'{bcolors.OKBLUE}Maximal cliques: {bcolors.ENDC}')
+        # cliques = g1.maximal_cliques()
+        # for c in cliques:
+        #     print_clique_and_matrix(g1.adjacency_matrix, c)
+
+        # print(f'\n{bcolors.OKBLUE}Maximum cliques: {bcolors.ENDC}')
+        # cliques = g1.maximum_cliques()
+        # for c in cliques:
+        #     print_clique_and_matrix(g1.adjacency_matrix, c)
+
+        # print(f'{bcolors.OKBLUE}Maximum cliques approx: {bcolors.ENDC}')
+        # cliques = g1.approx_maximum_cliques()
+        # for c in cliques:
+        #     print_clique_and_matrix(g1.adjacency_matrix, c)
 
     else:
         print('No graph data file given!')
         exit()
 
     if args.clique:
-        print("Maximum clique for graph 1: ")
-        print(g1.maximum_cliques())
+        print(f'\n{bcolors.OKBLUE}Maximum clique(s) for graph 1: {bcolors.ENDC}')
+        cliques = g1.maximum_cliques()
+        for c in cliques:
+            print_clique_and_matrix(g1.adjacency_matrix, c)
         pass
 
     if args.approx_clique:
-        print("Maximum clique approximation for graph 1: ")
-        pass
+        print(f'{bcolors.OKBLUE}Maximum clique(s) approximation for graph 1:{bcolors.ENDC}')
+        cliques = g1.approx_maximum_cliques()
+        for c in cliques:
+            print_clique_and_matrix(g1.adjacency_matrix, c)
+        
 
     if args.graph2:
         # with open(str(sys.argv[1]), 'r') as f:

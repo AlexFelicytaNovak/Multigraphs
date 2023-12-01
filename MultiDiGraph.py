@@ -107,7 +107,7 @@ class MultiDiGraph:
     
 
     def approx_maximal_cliques(self) -> Set[FrozenSet[int]]:
-        """Returns the approximation of maximum clique."""
+        """Returns the approximation of set of aximal cliques."""
         cliques = set()
         nodes, _ = self._size
 
@@ -120,6 +120,40 @@ class MultiDiGraph:
             cliques.add(greedy_single_maximal_clique(undir_g, vertex))
         
         return cliques
+
+    def approx_maximum_cliques(self) -> Set[FrozenSet[int]]:
+        """Returns the approximation of maximum clique."""
+        cliques = set()
+        nodes, _ = self._size
+
+        # Extract the embedded undirected graph O(n^2)
+        undir_g = MultiDiGraph.get_undirected_graph_from_directed_graph(
+                MultiDiGraph.get_graph_from_multigraph(self.adjacency_matrix))
+
+        # For each vertex calculate one maximal clique that contains it O(n^3)
+        for vertex in range(nodes):
+            cliques.add(greedy_single_maximal_clique(undir_g, vertex))
+        
+        # Extract maximum clique(s)
+        max_c_size = max(map(lambda set: len(set), cliques))
+        maximum_cliques = set([c for c in cliques if len(c) == max_c_size])
+        
+        # Extract the clique(s) with max number of edges
+        max_candidates = set()
+        max_edge_count = -1
+
+        for clique in maximum_cliques:
+            c_matrix = self.adjacency_matrix[np.ix_(list(clique), list(clique))]
+            edge_count = MultiDiGraph.count_edges(c_matrix)
+
+            if edge_count > max_edge_count:
+                max_candidates.clear()
+                max_candidates.add(clique)
+                max_edge_count = edge_count
+            elif edge_count == max_edge_count:
+                max_candidates.add(clique)
+
+        return max_candidates
 
 
     def maximum_cliques(self) -> Set[FrozenSet[int]]:
