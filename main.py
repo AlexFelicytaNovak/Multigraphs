@@ -39,21 +39,20 @@ if __name__ == '__main__':
         exit()
 
     if args.clique:
-        print(f'\n{bcolors.OKBLUE}Maximum cliques for g1: {bcolors.ENDC}')
+        print(f'\n{bcolors.OKBLUE}Maximum cliques for graph 1: {bcolors.ENDC}')
         cliques = g1.maximum_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
-        print(f'{bcolors.OKBLUE}Maximal cliques: {bcolors.ENDC}')
+        print(f'{bcolors.OKBLUE}Maximal cliques for graph 1: {bcolors.ENDC}')
         cliques = g1.maximal_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
 
     if args.approx_clique:
-        print(f'{bcolors.OKBLUE}Maximal cliques approx for g1: {bcolors.ENDC}')
-        cliques = g1.approx_maximal_cliques()
+        print(f'{bcolors.OKBLUE}Maximum clique(s) approximation for graph 1:{bcolors.ENDC}')
+        cliques = g1.approx_maximum_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
-        pass
 
     if args.graph2:
         print("MultiDiGraph 2:")
