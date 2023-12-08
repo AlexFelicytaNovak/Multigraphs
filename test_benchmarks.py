@@ -56,12 +56,12 @@ def distance_benchmark(edges: int, benchmark_type: str, distance_type: str, m1: 
 
 
 class TestBenchmarkMultiDiGraph(unittest.TestCase):
-
-    def test_benchmark_maximal_cliques_1_to_20_nodes(self):
+    # ---------------------------------------------MAXIMAL CLIQUE--------------------------------------------------
+    def test_benchmark_maximal_cliques(self):
         """Run benchmarks for MultiDiGraphs 1 to n nodes.
 
         Specify upper limit of nodes by setting n"""
-        n = 15
+        n = 20
         benchmark_data = []
 
         with (open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f):
@@ -74,6 +74,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
                 print(' - Matrix initialized')
 
                 mg = MultiDiGraph(matrix=A, remove_isolated_vertices=False)
+                mg.print()
                 expected = set([frozenset(range(nodes))])
                 before = perf_counter()
                 result = mg.maximal_cliques()
@@ -98,21 +99,21 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         plt.figure(figsize=(10, 6))
         plt.plot(nodes, time, label='finding maximal cliques time')
 
-        plt.title(f'Finding Maximum Cliques Benchmark')
+        plt.title(f'Finding Maximal Cliques Benchmark')
         plt.xlabel('Number of Nodes')
         plt.ylabel('Time (seconds)')
         plt.legend()
         plt.grid(True)
-        plt.savefig(f'benchmark_maximum_cliques.png')
+        plt.savefig(f'benchmark_maximal_cliques.png')
         plt.show()
 
-    def test_benchmark_maximal_cliques_random_multigraph_1_to_20_nodes(self):
+    def test_benchmark_maximal_cliques_random_multigraph(self):
         """Run benchmarks for MultiDiGraphs 1 to n nodes.
 
         Specify upper limit of nodes by setting n
         Specify upper limit of duplicate edges in a multigraph by setting me"""
-        n = 15
-        me = 7
+        n = 20
+        me = 10
         benchmark_random_matrices_data = []
 
         with (open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f):
@@ -124,6 +125,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
                     edges = max(random.sample(range(0, nodes*nodes-nodes), min(7, nodes-1)))
                 randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me),
                                       remove_isolated_vertices=False)
+                randMG.print()
                 print(' - Matrix initialized')
                 before = perf_counter()
                 result = randMG.maximal_cliques()
@@ -147,15 +149,15 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         plt.figure(figsize=(10, 6))
         plt.plot(nodes, time, label='finding maximal cliques time')
 
-        plt.title(f'Finding Maximum Cliques For Random Multigraphs Benchmark')
+        plt.title(f'Finding Maximal Cliques For Random Multigraphs Benchmark')
         plt.xlabel('Number of Nodes')
         plt.ylabel('Time (seconds)')
         plt.legend()
         plt.grid(True)
-        plt.savefig(f'benchmark_maximum_cliques_random_multigraphs.png')
+        plt.savefig(f'benchmark_maximal_cliques_random_multigraphs.png')
         plt.show()
 
-    def test_benchmark_approx_maximal_cliques_1_to_n_nodes(self):
+    def test_benchmark_approx_maximal_cliques(self):
         """Run benchmarks for MultiDiGraphs 1 to n nodes.
 
         Specify upper limit of nodes by setting n"""
@@ -201,10 +203,10 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         plt.ylabel('Time (seconds)')
         plt.legend()
         plt.grid(True)
-        plt.savefig(f'benchmark_maximum_cliques_full_multigraphs_approx.png')
+        plt.savefig(f'benchmark_maximal_cliques_full_multigraphs_approx.png')
         plt.show()
 
-    def test_benchmark_approx_maximal_cliques_random_multigraphs_1_to_n_nodes(self):
+    def test_benchmark_approx_maximal_cliques_random_multigraphs(self):
         """Run benchmarks for MultiDiGraphs 1 to n nodes.
 
         Specify upper limit of nodes by setting n
@@ -225,7 +227,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
                 print(' - Matrix initialized')
 
                 before = perf_counter()
-                result = randMG.maximal_cliques()
+                result = randMG.approx_maximal_cliques()
                 after = perf_counter()
 
                 print(f' - Case passed in {bcolors.WARNING}{after - before}{bcolors.ENDC} s.\n')
@@ -246,6 +248,204 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         plt.figure(figsize=(10, 6))
         plt.plot(nodes, time, label='finding maximal cliques time')
 
+        plt.title(f'Finding Approximate Maximal Cliques For Random Multigraphs Benchmark')
+        plt.xlabel('Number of Nodes')
+        plt.ylabel('Time (seconds)')
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(f'benchmark_maximal_cliques_random_multigraphs_approx.png')
+        plt.show()
+
+    # ---------------------------------------------MAXIMUM CLIQUE--------------------------------------------------
+    def test_benchmark_maximum_cliques(self):
+        """Run benchmarks for MultiDiGraphs 1 to n nodes.
+
+        Specify upper limit of nodes by setting n"""
+        n = 15
+        benchmark_data = []
+
+        with (open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f):
+            for nodes in range(1, n):
+                print(f'======= BENCHMARK {nodes} NODES =======')
+                A = np.ones(shape=(nodes, nodes))
+                for i in range(nodes):
+                    A[i][i] = 0
+
+                print(' - Matrix initialized')
+
+                mg = MultiDiGraph(matrix=A, remove_isolated_vertices=False)
+                expected = set([frozenset(range(nodes))])
+                before = perf_counter()
+                result = mg.maximum_cliques()
+                after = perf_counter()
+
+                self.assertEqual(result, expected)
+                print(f' - Case passed in {bcolors.WARNING}{after - before}{bcolors.ENDC} s.\n')
+
+                # log to file
+                f.write(f'{nodes},{after - before};\n')
+
+                benchmark_data.append({
+                    'time': after - before,
+                    'nodes': nodes
+                })
+
+        warnings.filterwarnings("ignore", category=MatplotlibDeprecationWarning)
+
+        nodes = [entry['nodes'] for entry in benchmark_data]
+        time = [entry['time'] for entry in benchmark_data]
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(nodes, time, label='finding maximum cliques time')
+
+        plt.title(f'Finding Maximum Cliques Benchmark')
+        plt.xlabel('Number of Nodes')
+        plt.ylabel('Time (seconds)')
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(f'benchmark_maximum_cliques.png')
+        plt.show()
+
+    def test_benchmark_maximum_cliques_random_multigraph(self):
+        """Run benchmarks for MultiDiGraphs 1 to n nodes.
+
+        Specify upper limit of nodes by setting n
+        Specify upper limit of duplicate edges in a multigraph by setting me"""
+        n = 15
+        me = 7
+        benchmark_random_matrices_data = []
+
+        with (open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f):
+            for nodes in range(1, n):
+                print(f'======= BENCHMARK {nodes} NODES =======')
+                if nodes == 1:
+                    edges = 0
+                else:
+                    edges = max(random.sample(range(0, nodes*nodes-nodes), min(7, nodes-1)))
+                randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me),
+                                      remove_isolated_vertices=False)
+                print(' - Matrix initialized')
+                before = perf_counter()
+                result = randMG.maximum_cliques()
+                after = perf_counter()
+
+                print(f' - Case passed in {bcolors.WARNING}{after - before}{bcolors.ENDC} s.\n')
+
+                # log to file
+                f.write(f'{nodes} - random multigraph,{after - before};\n')
+
+                benchmark_random_matrices_data.append({
+                    'time': after - before,
+                    'nodes': nodes
+                })
+
+        warnings.filterwarnings("ignore", category=MatplotlibDeprecationWarning)
+
+        nodes = [entry['nodes'] for entry in benchmark_random_matrices_data]
+        time = [entry['time'] for entry in benchmark_random_matrices_data]
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(nodes, time, label='finding maximum cliques time')
+
+        plt.title(f'Finding Maximum Cliques For Random Multigraphs Benchmark')
+        plt.xlabel('Number of Nodes')
+        plt.ylabel('Time (seconds)')
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(f'benchmark_maximum_cliques_random_multigraphs.png')
+        plt.show()
+
+    def test_benchmark_approx_maximum_cliques(self):
+        """Run benchmarks for MultiDiGraphs 1 to n nodes.
+
+        Specify upper limit of nodes by setting n"""
+        n = 200
+        benchmark_data = []
+
+        with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
+            for nodes in range(1, n):
+                print(f'======= BENCHMARK {nodes} NODES =======')
+                A = np.ones(shape=(nodes, nodes))
+                for i in range(nodes):
+                    A[i][i] = 0
+
+                print(' - Matrix initialized')
+
+                mg = MultiDiGraph(matrix=A, remove_isolated_vertices=False)
+                expected = set([frozenset(range(nodes))])
+                before = perf_counter()
+                result = mg.approx_maximum_cliques()
+                after = perf_counter()
+
+                self.assertEqual(result, expected)
+                print(f' - Case passed in {bcolors.WARNING}{after - before}{bcolors.ENDC} s.\n')
+
+                # log to file
+                f.write(f'{nodes},{after - before};\n')
+
+                benchmark_data.append({
+                    'time': after - before,
+                    'nodes': nodes
+                })
+
+        warnings.filterwarnings("ignore", category=MatplotlibDeprecationWarning)
+
+        nodes = [entry['nodes'] for entry in benchmark_data]
+        time = [entry['time'] for entry in benchmark_data]
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(nodes, time, label='finding approximate maximum cliques time')
+
+        plt.title('Finding Approximate Maximum Cliques Benchmark')
+        plt.xlabel('Number of Nodes')
+        plt.ylabel('Time (seconds)')
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(f'benchmark_maximum_cliques_full_multigraphs_approx.png')
+        plt.show()
+
+    def test_benchmark_approx_maximum_cliques_random_multigraphs(self):
+        """Run benchmarks for MultiDiGraphs 1 to n nodes.
+
+        Specify upper limit of nodes by setting n
+        Specify upper limit of duplicate edges in a multigraph by setting me"""
+        n = 200
+        me = 15
+        benchmark_random_matrices_data = []
+
+        with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
+            for nodes in range(1, n):
+                print(f'======= BENCHMARK {nodes} NODES =======')
+                if nodes == 1:
+                    edges = 0
+                else:
+                    edges = max(random.sample(range(0, nodes * nodes - nodes), min(7, nodes - 1)))
+                randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me),
+                                      remove_isolated_vertices=False)
+                print(' - Matrix initialized')
+
+                before = perf_counter()
+                result = randMG.approx_maximum_cliques()
+                after = perf_counter()
+
+                print(f' - Case passed in {bcolors.WARNING}{after - before}{bcolors.ENDC} s.\n')
+
+                # log to file
+                f.write(f'{nodes} - random multigraph,{after - before};\n')
+
+                benchmark_random_matrices_data.append({
+                    'time': after - before,
+                    'nodes': nodes
+                })
+
+        warnings.filterwarnings("ignore", category=MatplotlibDeprecationWarning)
+
+        nodes = [entry['nodes'] for entry in benchmark_random_matrices_data]
+        time = [entry['time'] for entry in benchmark_random_matrices_data]
+
+        plt.figure(figsize=(10, 6))
+        plt.plot(nodes, time, label='finding maximum cliques time')
+
         plt.title(f'Finding Approximate Maximum Cliques For Random Multigraphs Benchmark')
         plt.xlabel('Number of Nodes')
         plt.ylabel('Time (seconds)')
@@ -253,7 +453,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         plt.grid(True)
         plt.savefig(f'benchmark_maximum_cliques_random_multigraphs_approx.png')
         plt.show()
-
+    # ----------------------------------------MAXIMUM COMMON SUBGRAPH----------------------------------------------
     def test_benchmark_maximum_subgraph(self):
         """Run benchmarks for maximum subgraphs of MultiDiGraphs with 1 to n edges (edges counted in graphs).
 
@@ -410,6 +610,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
             plt.savefig(f'benchmark_maximum_subgraph_approx_plot_{category.lower().replace(" ", "_")}.png')
             plt.show()
 
+    # ---------------------------------------------METRIC DISTANCE----------------------------------------------
     def test_benchmark_distance(self):
         """Run benchmarks for calculating distance between two MultiDiGraphs with 1 to n nodes.
 
