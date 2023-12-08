@@ -65,7 +65,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         benchmark_data = []
 
         with (open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f):
-            for nodes in range(1, n):
+            for nodes in range(2, n):
                 print(f'======= BENCHMARK {nodes} NODES =======')
                 A = np.ones(shape=(nodes, nodes))
                 for i in range(nodes):
@@ -73,7 +73,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
 
                 print(' - Matrix initialized')
 
-                mg = MultiDiGraph(matrix=A, remove_isolated_vertices=False)
+                mg = MultiDiGraph(matrix=A)
                 mg.print()
                 expected = set([frozenset(range(nodes))])
                 before = perf_counter()
@@ -117,14 +117,13 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         benchmark_random_matrices_data = []
 
         with (open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f):
-            for nodes in range(1, n):
+            for nodes in range(2, n):
                 print(f'======= BENCHMARK {nodes} NODES =======')
-                if nodes == 1:
-                    edges = 0
-                else:
-                    edges = max(random.sample(range(0, nodes*nodes-nodes), min(7, nodes-1)))
-                randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me),
-                                      remove_isolated_vertices=False)
+                edges = max(random.sample(range(nodes, nodes * nodes - nodes + 1), min(7, nodes-1)))
+                while True:
+                    randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me))
+                    if randMG.size[0] == nodes:
+                        break
                 randMG.print()
                 print(' - Matrix initialized')
                 before = perf_counter()
@@ -165,7 +164,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         benchmark_data = []
 
         with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
-            for nodes in range(1, n):
+            for nodes in range(2, n):
                 print(f'======= BENCHMARK {nodes} NODES =======')
                 A = np.ones(shape=(nodes, nodes))
                 for i in range(nodes):
@@ -173,7 +172,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
 
                 print(' - Matrix initialized')
 
-                mg = MultiDiGraph(matrix=A, remove_isolated_vertices=False)
+                mg = MultiDiGraph(matrix=A)
                 expected = set([frozenset(range(nodes))])
                 before = perf_counter()
                 result = mg.approx_maximal_cliques()
@@ -216,14 +215,13 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         benchmark_random_matrices_data = []
 
         with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
-            for nodes in range(1, n):
+            for nodes in range(2, n):
                 print(f'======= BENCHMARK {nodes} NODES =======')
-                if nodes == 1:
-                    edges = 0
-                else:
-                    edges = max(random.sample(range(0, nodes * nodes - nodes), min(7, nodes - 1)))
-                randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me),
-                                      remove_isolated_vertices=False)
+                edges = max(random.sample(range(nodes, nodes * nodes - nodes + 1), min(7, nodes-1)))
+                while True:
+                    randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me))
+                    if randMG.size[0] == nodes:
+                        break
                 print(' - Matrix initialized')
 
                 before = perf_counter()
@@ -265,7 +263,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         benchmark_data = []
 
         with (open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f):
-            for nodes in range(1, n):
+            for nodes in range(2, n):
                 print(f'======= BENCHMARK {nodes} NODES =======')
                 A = np.ones(shape=(nodes, nodes))
                 for i in range(nodes):
@@ -273,7 +271,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
 
                 print(' - Matrix initialized')
 
-                mg = MultiDiGraph(matrix=A, remove_isolated_vertices=False)
+                mg = MultiDiGraph(matrix=A)
                 expected = set([frozenset(range(nodes))])
                 before = perf_counter()
                 result = mg.maximum_cliques()
@@ -316,14 +314,13 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         benchmark_random_matrices_data = []
 
         with (open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f):
-            for nodes in range(1, n):
+            for nodes in range(2, n):
                 print(f'======= BENCHMARK {nodes} NODES =======')
-                if nodes == 1:
-                    edges = 0
-                else:
-                    edges = max(random.sample(range(0, nodes*nodes-nodes), min(7, nodes-1)))
-                randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me),
-                                      remove_isolated_vertices=False)
+                edges = max(random.sample(range(nodes, nodes * nodes - nodes + 1), min(7, nodes-1)))
+                while True:
+                    randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me))
+                    if randMG.size[0] == nodes:
+                        break
                 print(' - Matrix initialized')
                 before = perf_counter()
                 result = randMG.maximum_cliques()
@@ -363,7 +360,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         benchmark_data = []
 
         with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
-            for nodes in range(1, n):
+            for nodes in range(2, n):
                 print(f'======= BENCHMARK {nodes} NODES =======')
                 A = np.ones(shape=(nodes, nodes))
                 for i in range(nodes):
@@ -371,7 +368,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
 
                 print(' - Matrix initialized')
 
-                mg = MultiDiGraph(matrix=A, remove_isolated_vertices=False)
+                mg = MultiDiGraph(matrix=A)
                 expected = set([frozenset(range(nodes))])
                 before = perf_counter()
                 result = mg.approx_maximum_cliques()
@@ -414,14 +411,15 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         benchmark_random_matrices_data = []
 
         with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
-            for nodes in range(1, n):
+            for nodes in range(2, n):
                 print(f'======= BENCHMARK {nodes} NODES =======')
-                if nodes == 1:
-                    edges = 0
-                else:
-                    edges = max(random.sample(range(0, nodes * nodes - nodes), min(7, nodes - 1)))
-                randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me),
-                                      remove_isolated_vertices=False)
+                edges = max(random.sample(range(nodes, nodes * nodes - nodes + 1), min(7, nodes-1)))
+
+                while True:
+                    randMG = MultiDiGraph(get_multigraph_from_graph(get_graph_with_n_nodes_and_m_edges(nodes, edges), me))
+                    if randMG.size[0] == nodes:
+                        break
+
                 print(' - Matrix initialized')
 
                 before = perf_counter()
@@ -453,6 +451,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         plt.grid(True)
         plt.savefig(f'benchmark_maximum_cliques_random_multigraphs_approx.png')
         plt.show()
+
     # ----------------------------------------MAXIMUM COMMON SUBGRAPH----------------------------------------------
     def test_benchmark_maximum_subgraph(self):
         """Run benchmarks for maximum subgraphs of MultiDiGraphs with 1 to n edges (edges counted in graphs).
