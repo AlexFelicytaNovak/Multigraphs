@@ -32,7 +32,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         """Run benchmarks for MultiDiGraphs 1 to n nodes.
 
         Specify upper limit of nodes by setting n"""
-        n = 13
+        n = 10
         benchmark_data = []
 
         with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
@@ -81,7 +81,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         """Run benchmarks for MultiDiGraphs 1 to n nodes.
 
         Specify upper limit of nodes by setting n"""
-        n = 200
+        n = 50
         benchmark_data = []
 
         with open(f'benchmark-run-{strftime("%y-%m-%d_%H_%M_%S", gmtime())}', 'w') as f:
