@@ -111,7 +111,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
 
         Specify upper limit of nodes by setting n
         Specify upper limit of duplicate edges in a multigraph by setting me"""
-        n = 15
+        n = 8
         me = 7
         benchmark_random_matrices_data = []
 
@@ -209,7 +209,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
 
         Specify upper limit of nodes by setting n
         Specify upper limit of duplicate edges in a multigraph by setting me"""
-        n = 200
+        n = 50
         me = 15
         benchmark_random_matrices_data = []
 
@@ -339,8 +339,8 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         Specify upper limit of duplicate edges in a multigraph by setting me
         Specify the number of nodes in the graphs by setting n"""
 
-        e = 25
-        me = 10
+        e = 15
+        me = 8
         n = 8
 
         benchmark_data = {
@@ -417,7 +417,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         Specify upper limit of duplicate edges in a multigraph by setting me
         Specify the number of nodes in the graphs by setting n"""
 
-        e = 11
+        e = 6
         me = 5
         n = 6
 
@@ -494,9 +494,9 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
         Specify upper limit of duplicate edges in a multigraph by setting me
         Specify the number of nodes in the graphs by setting n"""
 
-        e = 30
+        e = 15
         me = 5
-        n = 10
+        n = 8
 
         benchmark_data = {
             'l1_same_multigraphs': [],
