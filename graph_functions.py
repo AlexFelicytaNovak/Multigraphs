@@ -1,7 +1,6 @@
 import random
 import numpy as np
 from typing import FrozenSet, Set
-import pprint
 
 
 def read_graph_from_file(filename: str) -> np.array:

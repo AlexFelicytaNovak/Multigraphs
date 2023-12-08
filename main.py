@@ -1,9 +1,6 @@
 import argparse
-import math
-
-import numpy
-
 from graph_functions import read_graph_from_file, print_clique_and_matrix
+from distance_functions import distance_l1, distance_l2, approx_distance_l1, approx_distance_l2
 from maximum_subgraph import find_maximum_subgraphs
 from MultiDiGraph import MultiDiGraph
 from bcolors import bcolors
@@ -65,76 +62,30 @@ if __name__ == '__main__':
 
     if args.distance_l1:
         print("Distance between graph 1 and graph 2:")
-        # Finding maximum subgraph
-        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
-        # Calculating the L1 norm of subgraph's size
-        subgraph_size_norm = maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]
-
-        # Calculating the L1 norm of G1's size
-        g1_size_norm = g1.size[0] + g1.size[1]
-        # Calculating the L1 norm of G2's size
-        g2_size_norm = g2.size[0] + g2.size[1]
-
-        # Printing the distance between G1 and G2
-        print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
-        pass
+        distance, _ = distance_l1(g1, g2)
+        print(distance)
 
     if args.approx_distance_l1:
         print("Distance approximation between graph 1 and graph 2:")
-        # Finding maximum subgraph
-        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
-        # Calculating the L1 norm of subgraph's size
-        subgraph_size_norm = maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]
-
-        # Calculating the L1 norm of G1's size
-        g1_size_norm = g1.size[0] + g1.size[1]
-        # Calculating the L1 norm of G2's size
-        g2_size_norm = g2.size[0] + g2.size[1]
-
-        # Printing the distance between G1 and G2
-        print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
-        pass
+        distance, _ = approx_distance_l1(g1, g2)
+        print(distance)
 
     if args.distance_l2:
         print("Distance between graph 1 and graph 2:")
-        # Finding maximum subgraph
-        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
-        # Calculating the L2 norm of subgraph's size
-        subgraph_size_norm = math.sqrt(maximum_subgraphs[0].size[0]*maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]*maximum_subgraphs[0].size[1])
-
-        # Calculating the L2 norm of G1's size
-        g1_size_norm = math.sqrt(g1.size[0]*g1.size[0] + g1.size[1]*g1.size[1])
-        # Calculating the L2 norm of G2's size
-        g2_size_norm = math.sqrt(g2.size[0]*g2.size[0] + g2.size[1]*g2.size[1])
-
-        # Printing the distance between G1 and G2
-        print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
-        pass
+        distance, _ = distance_l2(g1, g2)
+        print(distance)
 
     if args.approx_distance_l2:
         print("Distance approximation between graph 1 and graph 2:")
-        # Finding maximum subgraph
-        _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
-        # Calculating the L2 norm of subgraph's size
-        subgraph_size_norm = math.sqrt(maximum_subgraphs[0].size[0]*maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]*maximum_subgraphs[0].size[1])
-
-        # Calculating the L2 norm of G1's size
-        g1_size_norm = math.sqrt(g1.size[0] * g1.size[0] + g1.size[1] * g1.size[1])
-        # Calculating the L2 norm of G2's size
-        g2_size_norm = math.sqrt(g2.size[0] * g2.size[0] + g2.size[1] * g2.size[1])
-
-        # Printing the distance between G1 and G2
-        print(f"{1 - subgraph_size_norm/max(g1_size_norm, g2_size_norm)}")
-        pass
+        distance, _ = approx_distance_l2(g1, g2)
+        print(distance)
 
     if args.subgraph:
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
         print(f"Maximum subgraph (1/{len(maximum_subgraphs)}) for graph 1 and graph 2:")
         maximum_subgraphs[0].print()
-        pass
 
     if args.approx_subgraph:
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
         print(f"Maximum subgraph approximation (1/{len(maximum_subgraphs)}) for graph 1 and graph 2:")
         maximum_subgraphs[0].print()
-        pass
