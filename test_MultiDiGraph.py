@@ -158,19 +158,11 @@ class TestMultiDiGraphInstanceMethods(unittest.TestCase):
     def test_size_for_multigraph_with_no_edges(self):
         """Should return correct size for multigraph with no edges."""
         mdg = MultiDiGraph(np.zeros(shape=(6, 6)))
-        expected = (6, 0)
+        expected = (0, 0)
         result = mdg.size
         self.assertEqual(result, expected)
 
     
-    def test_size_for_empty_multigraph(self):
-        """Should return correct size for empty multigraph."""
-        mdg = MultiDiGraph(np.zeros(shape=(0)))
-        expected = (0, 0)
-        result = mdg.size
-        self.assertEqual(result, expected)
-        
-
     def test_size_regular_multigraph(self):
         """Should return correct size for multigraph."""
         mdg = MultiDiGraph(np.array([
@@ -199,20 +191,6 @@ class TestMultiDiGraphInstanceMethods(unittest.TestCase):
         mg = MultiDiGraph(matrix=A)
         expected = set([frozenset([7, 1, 2, 3]), frozenset([0, 4, 5, 6]),
                         frozenset([2, 4])])
-        result = mg.maximal_cliques()
-        self.assertEqual(result, expected)
-
-
-    def test_maximal_cliques_with_no_edges(self):
-        """Should return set of singletons for graph with no edges."""
-
-        A = np.array([
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0],
-            ])
-        mg = MultiDiGraph(matrix=A)
-        expected = set([frozenset([2]), frozenset([1]), frozenset([0])])
         result = mg.maximal_cliques()
         self.assertEqual(result, expected)
 

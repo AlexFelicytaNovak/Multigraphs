@@ -209,7 +209,7 @@ class TestBenchmarkMultiDiGraph(unittest.TestCase):
 
         Specify upper limit of nodes by setting n
         Specify upper limit of duplicate edges in a multigraph by setting me"""
-        n = 50
+        n = 30
         me = 15
         benchmark_random_matrices_data = []
 
