@@ -2,6 +2,7 @@ from typing import Tuple, cast
 import unittest
 import numpy as np
 from MultiDiGraph import MultiDiGraph
+from graph_functions import read_graph_from_file
 
 class TestMultiDiGraphStaticMethods(unittest.TestCase):
 
@@ -268,6 +269,113 @@ class TestMultiDiGraphInstanceMethods(unittest.TestCase):
         result = mg.maximum_cliques()
         self.assertEqual(result, expected)
 
+
+class TestMaximumCliques(unittest.TestCase):
+    def setUp(self) -> None:
+        self.g1 = MultiDiGraph(read_graph_from_file(
+            "./sample_graphs/g1_for_cliques.txt"))
+        self.g2 = MultiDiGraph(read_graph_from_file(
+            "./sample_graphs/g2_for_cliques.txt"))
+        self.g3 = MultiDiGraph(read_graph_from_file(
+            "./sample_graphs/g3_for_cliques.txt"))
+        self.g4 = MultiDiGraph(read_graph_from_file(
+            "./sample_graphs/g4_for_cliques.txt"))
+        return super().setUp()
+
+    def test_on_g1(self):
+        expected = set([
+            # vertex numbering in svg file starts from 1 not 0,
+            # so the correct vertices will be -1 here
+            frozenset([6, 9, 10, 11]),
+        ])
+        result = self.g1.maximum_cliques()
+        self.assertEqual(result, expected)
+
+    def test_on_g2(self):
+        expected = set([
+            frozenset([2, 3, 5, 6]),
+        ])
+        result = self.g2.maximum_cliques()
+        self.assertEqual(result, expected)
+        
+    def test_on_g3(self):
+        expected = set([
+            frozenset([3, 4, 5]),
+        ])
+        result = self.g3.maximum_cliques()
+        self.assertEqual(result, expected)
+
+    def test_on_g4(self):
+        expected = set([
+            frozenset([2, 3, 5]),
+            frozenset([3, 4, 5]),
+        ])
+        result = self.g4.maximum_cliques()
+        self.assertEqual(result, expected)
+
+class TestMaximalCliques(unittest.TestCase):
+    def setUp(self) -> None:
+        self.g1 = MultiDiGraph(read_graph_from_file(
+            "./sample_graphs/g1_for_cliques.txt"))
+        self.g2 = MultiDiGraph(read_graph_from_file(
+            "./sample_graphs/g2_for_cliques.txt"))
+        self.g3 = MultiDiGraph(read_graph_from_file(
+            "./sample_graphs/g3_for_cliques.txt"))
+        self.g4 = MultiDiGraph(read_graph_from_file(
+            "./sample_graphs/g4_for_cliques.txt"))
+        return super().setUp()
+
+    def test_on_g1(self):
+        expected = set([
+            # vertex numbering in svg starts from 1 not 0,
+            # so the correct vertices will be -1 here
+            frozenset([6, 9, 10, 11]),
+            frozenset([0, 1, 2, 3]),
+            frozenset([4, 5, 6]),
+            frozenset([2, 3, 5]),
+            frozenset([3, 7]),
+            frozenset([7, 8]),
+            frozenset([4, 8]),
+        ])
+        result = self.g1.maximal_cliques()
+        self.assertEqual(result, expected)
+
+    def test_on_g2(self):
+        expected = set([
+            frozenset([2, 3, 5, 6]),
+            frozenset([0, 1, 3, 4]),
+            frozenset([1, 2, 3, 4]),
+            frozenset([12, 13, 14]),
+            frozenset([1, 7]),
+            frozenset([7, 8]),
+            frozenset([8, 9]),
+            frozenset([10, 11]),
+            frozenset([15]),
+        ])
+        result = self.g2.maximal_cliques()
+        self.assertEqual(result, expected)
+
+    def test_on_g3(self):
+        expected = set([
+            frozenset([3, 4, 5]),
+            frozenset([0, 1, 2]),
+            frozenset([7, 8, 9]),
+            frozenset([2, 6]),
+            frozenset([6, 10]),
+            frozenset([11]),
+            frozenset([12]),
+        ])
+        result = self.g3.maximal_cliques()
+        self.assertEqual(result, expected)
+
+    def test_on_g4(self):
+        expected = set([
+            frozenset([2, 3, 5]),
+            frozenset([3, 4, 5]),
+            frozenset([0, 1, 2]),
+        ])
+        result = self.g4.maximal_cliques()
+        self.assertEqual(result, expected)
 
 if __name__ == '__main__':
     unittest.main()
