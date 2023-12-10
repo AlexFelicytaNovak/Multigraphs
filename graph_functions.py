@@ -7,8 +7,13 @@ def read_graph_from_file(filename: str) -> np.array:
     with open(filename, 'r') as f:
         lines = [line.strip() for line in f.readlines()]
 
-    n = lines[0]
-    rows = lines[1:int(n)+1]
+    g_count = lines[0] 
+    if int(g_count) != 1:
+        print('Provide only files with single graph inside!')
+        exit(1)
+
+    n = lines[1]
+    rows = lines[2:int(n)+2]
     matrix = []
     for row in rows:
         matrix.append(row.split())
