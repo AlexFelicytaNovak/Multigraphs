@@ -12,6 +12,9 @@ You can ensure that python is available in your terminal by issuing a command:
 ```bash
 PS C:\> python --version
 ```
+
+If you have sources of the program already downloaded you can navigate to the source directory and skip steps 3 to 6 in this instruction.
+
 3. Navigate to the directory you want to download the package to:
 ```bash
 PS C:\> cd path/to/the/directory
