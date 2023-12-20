@@ -2,6 +2,7 @@ import argparse
 from graph_functions import read_graph_from_file, print_clique_and_matrix
 from distance_functions import distance_l1, distance_l2, approx_distance_l1, approx_distance_l2
 from maximum_subgraph import find_maximum_subgraphs
+from sys import exit
 from MultiDiGraph import MultiDiGraph
 
 if __name__ == '__main__':
