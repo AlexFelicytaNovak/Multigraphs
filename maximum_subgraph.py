@@ -141,6 +141,25 @@ def get_matrix_from_edges(subgraph_edges_map: List[dict], graph_num: int) -> np.
     return matrix
 
 
+def remove_duplicated(maximum_subgraphs: list) -> list:
+    result = []
+    for maximum_subgraph in maximum_subgraphs:
+        if len(result) == 0:
+            result.append(maximum_subgraph)
+            continue
+
+        duplicate = False
+        for res in result:
+            if res['multisubgraph_edge_map'] == maximum_subgraph['multisubgraph_edge_map']:
+                duplicate = True
+                continue
+
+        if not duplicate:
+            result.append(maximum_subgraph)
+
+    return result
+
+
 def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph, approximate: bool = False) -> Tuple[float, Union[List[np.array], None]]:
     """Returns maximum subgraphs of two graphs based on node count first, edge count second.
 
@@ -219,6 +238,8 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
                 'multisubgraph_edge_map': multisubgraph_edges_map,
                 'multi_di_subgraph': multi_di_subgraph
             })
+
+    maximum_subgraphs = remove_duplicated(maximum_subgraphs)
 
     result = []
     for maximum_subgraph in maximum_subgraphs:
