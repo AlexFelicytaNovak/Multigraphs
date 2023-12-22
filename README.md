@@ -15,6 +15,7 @@ The program can also display a summary of available arguments (flags) with:
 ```cmd
 .\main.exe -h
 ```
+*The program works with the .txt files that contain exactly one graph.* If given a file that contains more than one graph, it will display a message `Provide only files with single graph inside!` and exit.
 
 # Possible arguments for testing specific functionality
 
@@ -42,11 +43,11 @@ The program can also display a summary of available arguments (flags) with:
 ```cmd
 .\main.exe -g1 path/to/graph -g2 path/to/graph -ad2
 ```
-### Maximal subgraph
+### Maximum subgraph
 ```cmd
 .\main.exe -g1 path/to/graph -g2 path/to/graph -s
 ```
-### Maximal subgraph approximation
+### Maximum subgraph approximation
 ```cmd
 .\main.exe -g1 path/to/graph -g2 path/to/graph -as
 ```
