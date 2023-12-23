@@ -13,7 +13,8 @@ def distance_l1(g1: MultiDiGraph, g2: MultiDiGraph) -> (float, float):
     maximum_subgraph_finding_time = t2 - t1
 
     # Calculating the L1 norm of subgraph's size
-    subgraph_size_norm = maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]
+    subgraph_size_norm = (maximum_subgraphs[0]['multi_di_subgraph'].size[0] +
+                          maximum_subgraphs[0]['multi_di_subgraph'].size[1])
 
     # Calculating the L1 norm of G1's size
     g1_size_norm = g1.size[0] + g1.size[1]
@@ -33,7 +34,8 @@ def approx_distance_l1(g1: MultiDiGraph, g2: MultiDiGraph) -> (float, float):
     maximum_subgraph_finding_time = t2 - t1
 
     # Calculating the L1 norm of subgraph's size
-    subgraph_size_norm = maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1]
+    subgraph_size_norm = (maximum_subgraphs[0]['multi_di_subgraph'].size[0] +
+                          maximum_subgraphs[0]['multi_di_subgraph'].size[1])
 
     # Calculating the L1 norm of G1's size
     g1_size_norm = g1.size[0] + g1.size[1]
@@ -54,8 +56,8 @@ def distance_l2(g1: MultiDiGraph, g2: MultiDiGraph) -> (float, float):
 
     # Calculating the L2 norm of subgraph's size
     subgraph_size_norm = math.sqrt(
-        maximum_subgraphs[0].size[0] * maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1] *
-        maximum_subgraphs[0].size[1])
+        maximum_subgraphs[0]['multi_di_subgraph'].size[0] * maximum_subgraphs[0]['multi_di_subgraph'].size[0] +
+        maximum_subgraphs[0]['multi_di_subgraph'].size[1] * maximum_subgraphs[0]['multi_di_subgraph'].size[1])
 
     # Calculating the L2 norm of G1's size
     g1_size_norm = math.sqrt(g1.size[0] * g1.size[0] + g1.size[1] * g1.size[1])
@@ -76,8 +78,8 @@ def approx_distance_l2(g1: MultiDiGraph, g2: MultiDiGraph) -> (float, float):
 
     # Calculating the L2 norm of subgraph's size
     subgraph_size_norm = math.sqrt(
-        maximum_subgraphs[0].size[0] * maximum_subgraphs[0].size[0] + maximum_subgraphs[0].size[1] *
-        maximum_subgraphs[0].size[1])
+        maximum_subgraphs[0]['multi_di_subgraph'].size[0] * maximum_subgraphs[0]['multi_di_subgraph'].size[0] +
+        maximum_subgraphs[0]['multi_di_subgraph'].size[1] * maximum_subgraphs[0]['multi_di_subgraph'].size[1])
 
     # Calculating the L2 norm of G1's size
     g1_size_norm = math.sqrt(g1.size[0] * g1.size[0] + g1.size[1] * g1.size[1])
