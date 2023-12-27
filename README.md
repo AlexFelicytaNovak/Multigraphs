@@ -15,7 +15,7 @@ The program can also display a summary of available arguments (flags) with:
 ```cmd
 .\main.exe -h
 ```
-**The program works with the .txt files that contain exactly one graph.** If given a file that contains more than one graph, it will display a message `Provide only files with single graph inside!` and exit.
+**The program works with the .txt files that contain exactly one graph.** If given a file that contains more than one graph, it will display a message `Provide only files with single graph inside!` and exit. Detailed description and visualizations of graphs provided in in `Examples` directory is provided in the project report.
 
 # Possible arguments for testing specific functionality
 
