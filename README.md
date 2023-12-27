@@ -51,3 +51,10 @@ The program can also display a summary of available arguments (flags) with:
 ```cmd
 .\main.exe -g1 path/to/graph -g2 path/to/graph -as
 ```
+Argument flags can be used in combination with one-another, f.e. using all options
+```cmd
+.\main.exe -g1 graph1.txt --clique --approx_clique -g2 graph2.txt --distance_l1 --approx_distance_l1 --distance_l2 --approx_distance_l2 --subgraph --approx_subgraph
+```
+will result in calculating:
+* maximum clique (or cliques) as well as its approximation for graph from the file given next to -g1 (here 'graph1.txt')
+* common subgraph (or subgraphs) and approximation of maximum common subgraph (or subgraphs), distance and its approximation (with L1 and L2 norms) for graphs from files given next to -g1 and -g2 (here 'graph1.txt' and 'graph2.txt').
