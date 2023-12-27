@@ -160,7 +160,55 @@ def remove_duplicated(maximum_subgraphs: list) -> list:
     return result
 
 
-def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph, approximate: bool = False) -> Tuple[float, Union[List[np.array], None]]:
+def get_subgraph_vertices_map(subgraph_edges_map: list[dict], graph_num: int) -> list[dict]:
+    subgraph1_vertices = []
+    for edge in subgraph_edges_map:
+        subgraph1_vertices.append(edge[f'edge_g{graph_num}']['v0'])
+        subgraph1_vertices.append(edge[f'edge_g{graph_num}']['vf'])
+
+    sorted_subgraph_vertices = sorted(set(subgraph1_vertices))
+    second_graph_num = 2 if graph_num == 1 else 1
+
+    subgraph_vertices_map = []
+    for subgraph_vertex in sorted_subgraph_vertices:
+        second_graph_vertex = ""
+
+        for edge in subgraph_edges_map:
+            if edge[f'edge_g{graph_num}']['v0'] == subgraph_vertex:
+                second_graph_vertex = edge[f'edge_g{second_graph_num}']['v0']
+                break
+            if edge[f'edge_g{graph_num}']['vf'] == subgraph_vertex:
+                second_graph_vertex = edge[f'edge_g{second_graph_num}']['vf']
+                break
+
+        subgraph_vertices_map.append({
+            'v_subgraph_index': sorted_subgraph_vertices.index(subgraph_vertex),
+            f'v_graph_{graph_num}_index': subgraph_vertex,
+            f'v_graph_{second_graph_num}_index': second_graph_vertex
+        })
+
+    return subgraph_vertices_map
+
+
+def get_printible_vertex_map(multisubgraph_vertex_map: list[dict]) -> list[list]:
+    vertex_map = []
+    for v_map in multisubgraph_vertex_map:
+        vertex_map.append([v_map['v_subgraph_index'], v_map['v_graph_1_index'], v_map['v_graph_2_index']])
+
+    return vertex_map
+
+
+def get_graph_vertices(subgraph_edges_map: list[dict], graph_num: int) -> list:
+    subgraph_vertices = []
+    for edge in subgraph_edges_map:
+        subgraph_vertices.append(edge[f'edge_g{graph_num}']['v0'])
+        subgraph_vertices.append(edge[f'edge_g{graph_num}']['vf'])
+
+    return sorted(set(subgraph_vertices))
+
+
+def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: MultiDiGraph, approximate: bool = False) \
+        -> Tuple[float, Union[List[np.array], None]]:
     """Returns maximum subgraphs of two graphs based on node count first, edge count second.
 
     Algorithm:
@@ -219,7 +267,7 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
                                                           multi_di_graph2.adjacency_matrix)
 
         multi_di_subgraph = MultiDiGraph(get_matrix_from_edges(multisubgraph_edges_map, 1))
-        # multi_di_subgraph2 = MultiDiGraph(get_matrix_from_edges(multisubgraph_edges_map, 2))
+        multisubgraph_vertices_map = get_subgraph_vertices_map(multisubgraph_edges_map, 1)
 
         # update the maximum subgraphs list
         if multi_di_subgraph.size[0] > max_size[0] or \
@@ -228,6 +276,7 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
             maximum_subgraphs.append({
                 'subgraph_edge_map': subgraph_edges_map,
                 'multisubgraph_edge_map': multisubgraph_edges_map,
+                'multisubgraph_vertex_map': multisubgraph_vertices_map,
                 'multi_di_subgraph': multi_di_subgraph
             })
             max_size = multi_di_subgraph.size
@@ -236,6 +285,7 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
             maximum_subgraphs.append({
                 'subgraph_edge_map': subgraph_edges_map,
                 'multisubgraph_edge_map': multisubgraph_edges_map,
+                'multisubgraph_vertex_map': multisubgraph_vertices_map,
                 'multi_di_subgraph': multi_di_subgraph
             })
 
@@ -243,5 +293,11 @@ def find_maximum_subgraphs(multi_di_graph1: MultiDiGraph, multi_di_graph2: Multi
 
     result = []
     for maximum_subgraph in maximum_subgraphs:
-        result.append(maximum_subgraph['multi_di_subgraph'])
+        result.append({
+            'multi_di_subgraph': maximum_subgraph['multi_di_subgraph'],
+            'multisubgraph_vertex_map': maximum_subgraph['multisubgraph_vertex_map'],
+            'printable_vertex_map': get_printible_vertex_map(maximum_subgraph['multisubgraph_vertex_map']),
+            'graph_1_vertices': get_graph_vertices(maximum_subgraph['multisubgraph_edge_map'], 1),
+            'graph_2_vertices': get_graph_vertices(maximum_subgraph['multisubgraph_edge_map'], 2),
+        })
     return maximal_clique_finding_time, result

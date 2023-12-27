@@ -82,10 +82,25 @@ if __name__ == '__main__':
 
     if args.subgraph:
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
-        print(f"Maximum subgraph (1/{len(maximum_subgraphs)}) for graph 1 and graph 2:")
-        maximum_subgraphs[0].print()
+        print(f"Number of maximum subgraphs for graph 1 and graph 2: {len(maximum_subgraphs)}, convention for mapping "
+              f"vertices used: (subgraph_vertex_index, graph_1_vertex_index, graph_2_vertex_index) ")
+
+        for subgraph in maximum_subgraphs:
+            print(f"{maximum_subgraphs.index(subgraph) +1} / {len(maximum_subgraphs)}:")
+            subgraph['multi_di_subgraph'].print()
+            print(f"multigraph 1 vertex set: {subgraph['graph_1_vertices']}")
+            print(f"multigraph 2 vertex set: {subgraph['graph_2_vertices']}")
+            print(f"vertices map: {subgraph['printable_vertex_map']}\n")
 
     if args.approx_subgraph:
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
-        print(f"Maximum subgraph approximation (1/{len(maximum_subgraphs)}) for graph 1 and graph 2:")
-        maximum_subgraphs[0].print()
+        print(f"Number of maximum subgraphs approximations for graph 1 and graph 2: {len(maximum_subgraphs)}, "
+              f"convention for mapping vertices used: (subgraph_vertex_index, graph_1_vertex_index, "
+              f"graph_2_vertex_index) ")
+
+        for subgraph in maximum_subgraphs:
+            print(f"{maximum_subgraphs.index(subgraph) +1} / {len(maximum_subgraphs)}:")
+            subgraph['multi_di_subgraph'].print()
+            print(f"multigraph 1 vertex set: {subgraph['graph_1_vertices']}")
+            print(f"multigraph 2 vertex set: {subgraph['graph_2_vertices']}")
+            print(f"vertices map: {subgraph['printable_vertex_map']}\n")
