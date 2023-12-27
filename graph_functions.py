@@ -1,5 +1,6 @@
 import random
 import numpy as np
+from sys import exit
 from typing import FrozenSet, Set
 
 
@@ -10,7 +11,7 @@ def read_graph_from_file(filename: str) -> np.array:
     g_count = lines[0] 
     if int(g_count) != 1:
         print('Provide only files with single graph inside!')
-        exit(1)
+        exit()
 
     n = lines[1]
     rows = lines[2:int(n)+2]
