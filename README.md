@@ -17,6 +17,8 @@ The program can also display a summary of available arguments (flags) with:
 ```
 **The program works with the .txt files that contain exactly one graph.** If given a file that contains more than one graph, it will display a message `Provide only files with single graph inside!` and exit. Detailed description and visualizations of graphs provided in `Examples` directory is provided in the project report.
 
+Due to the `.exe` of the program being included, Windows Defender may automatically delete the `main.exe` executable and `Exe` directory may appear empty. In such case, an exclusion for the file needs to be set up in Windows, so that the file does not disappear.
+
 # Possible arguments for testing specific functionality
 
 ### Maximum & maximal cliques
