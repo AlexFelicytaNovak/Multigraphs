@@ -6,6 +6,8 @@ name: Python application
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build-windows:
@@ -38,9 +40,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: ${{ github.event.head_commit.message }}
-          body: |
-            Multigraphs v1.0.0
+          release_name: Multigraphs ${{ github.ref }}
+          body: ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
