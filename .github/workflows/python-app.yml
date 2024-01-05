@@ -41,7 +41,6 @@ jobs:
         with:
           tag_name: ${{ github.event.head_commit.message }}
           release_name: ${{ github.event.head_commit.message }}
-          overwrite: true
           body: |
             Multigraphs v1.0.0
           draft: false
