@@ -4,6 +4,25 @@ from sys import exit
 from typing import FrozenSet, Set
 
 
+def print_submat(matrix: np.array, subset: FrozenSet[int]) -> None:
+    '''Prints matrix with all the entries except columns & rows in subset replaced with "." character. 
+
+    Arguments:
+        - matrix: matrix to print the entries from,
+        - subset: subset of rows & columns to display.
+    '''
+    submat = matrix.astype(dtype=str, copy=True)
+    complement = set(range(len(matrix)))
+    complement = complement - subset
+
+    submat[np.ix_(list(complement), list(complement))] = '.'
+    submat_str = submat.__str__()
+    submat_str = submat_str.replace("'", '')
+    submat_str = submat_str.replace(",", '')
+    submat_str = submat_str.replace('None', '')
+    print(submat_str)
+
+
 def read_graph_from_file(filename: str) -> np.array:
     with open(filename, 'r') as f:
         lines = [line.strip() for line in f.readlines()]
@@ -155,5 +174,5 @@ def print_clique_and_matrix(graph_matrix: np.array, clique: FrozenSet[int]) -> N
     print(f"Vertex indices from original graph: {tuple(clique)}")
     print()
     print("Matrix of resultant graph:")
-    print(graph_matrix[np.ix_(list(clique), list(clique))])
+    print_submat(graph_matrix, clique)
     print()
