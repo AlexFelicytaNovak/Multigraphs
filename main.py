@@ -2,6 +2,7 @@ import argparse
 from graph_functions import read_graph_from_file, print_clique_and_matrix
 from distance_functions import distance_l1, distance_l2, approx_distance_l1, approx_distance_l2
 from maximum_subgraph import find_maximum_subgraphs
+from sys import exit
 from MultiDiGraph import MultiDiGraph
 
 if __name__ == '__main__':
@@ -35,17 +36,17 @@ if __name__ == '__main__':
         exit()
 
     if args.clique:
-        print('\nMaximum cliques for graph 1: ')
+        print('\n ------------------------------- Maximum cliques for graph 1: -------------------------------')
         cliques = g1.maximum_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
-        print('Maximal cliques for graph 1: ')
+        print(' -------------------------------  Maximal cliques for graph 1: ------------------------------- ')
         cliques = g1.maximal_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
 
     if args.approx_clique:
-        print('Maximum clique(s) approximation for graph 1:')
+        print(' ------------------------------- Maximum clique(s) approximation for graph 1: -------------------------------')
         cliques = g1.approx_maximum_cliques()
         for c in cliques:
             print_clique_and_matrix(g1.adjacency_matrix, c)
@@ -60,28 +61,28 @@ if __name__ == '__main__':
         exit()
 
     if args.distance_l1:
-        print("Distance between graph 1 and graph 2:")
+        print(" ------------------------------- Distance between graph 1 and graph 2: -------------------------------")
         distance, _ = distance_l1(g1, g2)
         # Limit distance to 3 significant digits
         distance = float(f"{distance:.3}")
         print(distance)
 
     if args.approx_distance_l1:
-        print("Distance approximation between graph 1 and graph 2:")
+        print(" ------------------------------- Distance approximation between graph 1 and graph 2: -------------------------------")
         distance, _ = approx_distance_l1(g1, g2)
         # Limit distance to 3 significant digits
         distance = float(f"{distance:.3}")
         print(distance)
 
     if args.distance_l2:
-        print("Distance between graph 1 and graph 2:")
+        print(" ------------------------------- Distance between graph 1 and graph 2: -------------------------------")
         distance, _ = distance_l2(g1, g2)
         # Limit distance to 3 significant digits
         distance = float(f"{distance:.3}")
         print(distance)
 
     if args.approx_distance_l2:
-        print("Distance approximation between graph 1 and graph 2:")
+        print(" ------------------------------- Distance approximation between graph 1 and graph 2: -------------------------------")
         distance, _ = approx_distance_l2(g1, g2)
         # Limit distance to 3 significant digits
         distance = float(f"{distance:.3}")
@@ -89,6 +90,7 @@ if __name__ == '__main__':
 
     if args.subgraph:
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2)
+        print(" ------------------------------- SUBGRAPHS -------------------------------")
         print(f"Number of maximum subgraphs for graph 1 and graph 2: {len(maximum_subgraphs)}, convention for mapping "
               f"vertices used: (subgraph_vertex_index, graph_1_vertex_index, graph_2_vertex_index) ")
 
@@ -101,6 +103,7 @@ if __name__ == '__main__':
 
     if args.approx_subgraph:
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
+        print(" ------------------------------- SUBGRAPHS APPROXIMATIONS -------------------------------")
         print(f"Number of maximum subgraphs approximations for graph 1 and graph 2: {len(maximum_subgraphs)}, "
               f"convention for mapping vertices used: (subgraph_vertex_index, graph_1_vertex_index, "
               f"graph_2_vertex_index) ")
