@@ -61,28 +61,28 @@ if __name__ == '__main__':
         exit()
 
     if args.distance_l1:
-        print(" ------------------------------- Distance between graph 1 and graph 2: -------------------------------")
+        print(" ------------------------------- Distance (L1) between graph 1 and graph 2: -------------------------------")
         distance, _ = distance_l1(g1, g2)
         # Limit distance to 3 significant digits
         distance = float(f"{distance:.3}")
         print(distance)
 
     if args.approx_distance_l1:
-        print(" ------------------------------- Distance approximation between graph 1 and graph 2: -------------------------------")
+        print(" ------------------------------- Distance approximation (L1) between graph 1 and graph 2: -------------------------------")
         distance, _ = approx_distance_l1(g1, g2)
         # Limit distance to 3 significant digits
         distance = float(f"{distance:.3}")
         print(distance)
 
     if args.distance_l2:
-        print(" ------------------------------- Distance between graph 1 and graph 2: -------------------------------")
+        print(" ------------------------------- Distance (L2) between graph 1 and graph 2: -------------------------------")
         distance, _ = distance_l2(g1, g2)
         # Limit distance to 3 significant digits
         distance = float(f"{distance:.3}")
         print(distance)
 
     if args.approx_distance_l2:
-        print(" ------------------------------- Distance approximation between graph 1 and graph 2: -------------------------------")
+        print(" ------------------------------- Distance approximation (L2) between graph 1 and graph 2: -------------------------------")
         distance, _ = approx_distance_l2(g1, g2)
         # Limit distance to 3 significant digits
         distance = float(f"{distance:.3}")
