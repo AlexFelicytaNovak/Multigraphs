@@ -1,5 +1,5 @@
 import argparse
-from graph_functions import read_graph_from_file, print_clique_and_matrix
+from graph_functions import read_graph_from_file, print_clique_and_matrix, print_submat
 from distance_functions import distance_l1, distance_l2, approx_distance_l1, approx_distance_l2
 from maximum_subgraph import find_maximum_subgraphs
 from sys import exit
@@ -95,11 +95,18 @@ if __name__ == '__main__':
               f"vertices used: (subgraph_vertex_index, graph_1_vertex_index, graph_2_vertex_index) ")
 
         for subgraph in maximum_subgraphs:
-            print(f"{maximum_subgraphs.index(subgraph) +1} / {len(maximum_subgraphs)}:")
+            print(f"===== subgraph {maximum_subgraphs.index(subgraph) +1} / {len(maximum_subgraphs)} =====")
             subgraph['multi_di_subgraph'].print()
-            print(f"multigraph 1 vertex set: {subgraph['graph_1_vertices']}")
-            print(f"multigraph 2 vertex set: {subgraph['graph_2_vertices']}")
-            print(f"vertices map: {subgraph['printable_vertex_map']}\n")
+
+            print("\n multigraph 1: ")
+            print_submat(subgraph['graph_1_with_only_subgraph_edges'], subgraph['graph_1_vertices'])
+
+            print("\n multigraph 2: ")
+            print_submat(subgraph['graph_2_with_only_subgraph_edges'], subgraph['graph_2_vertices'])
+
+            # print(f"\nmultigraph 1 vertex set: {subgraph['graph_1_vertices']}")
+            # print(f"multigraph 2 vertex set: {subgraph['graph_2_vertices']}")
+            print(f"\nvertices map: {subgraph['printable_vertex_map']}\n")
 
     if args.approx_subgraph:
         _, maximum_subgraphs = find_maximum_subgraphs(g1, g2, approximate=True)
@@ -109,8 +116,15 @@ if __name__ == '__main__':
               f"graph_2_vertex_index) ")
 
         for subgraph in maximum_subgraphs:
-            print(f"{maximum_subgraphs.index(subgraph) +1} / {len(maximum_subgraphs)}:")
+            print(f"===== subgraph {maximum_subgraphs.index(subgraph) +1} / {len(maximum_subgraphs)} =====")
             subgraph['multi_di_subgraph'].print()
-            print(f"multigraph 1 vertex set: {subgraph['graph_1_vertices']}")
-            print(f"multigraph 2 vertex set: {subgraph['graph_2_vertices']}")
-            print(f"vertices map: {subgraph['printable_vertex_map']}\n")
+
+            print("\n multigraph 1: ")
+            print_submat(subgraph['graph_1_with_only_subgraph_edges'], subgraph['graph_1_vertices'])
+
+            print("\n multigraph 2: ")
+            print_submat(subgraph['graph_2_with_only_subgraph_edges'], subgraph['graph_2_vertices'])
+
+            # print(f"\nmultigraph 1 vertex set: {subgraph['graph_1_vertices']}")
+            # print(f"multigraph 2 vertex set: {subgraph['graph_2_vertices']}")
+            print(f"\nvertices map: {subgraph['printable_vertex_map']}\n")

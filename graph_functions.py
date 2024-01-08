@@ -15,7 +15,11 @@ def print_submat(matrix: np.array, subset: FrozenSet[int]) -> None:
     complement = set(range(len(matrix)))
     complement = complement - subset
 
-    submat[np.ix_(list(complement), list(complement))] = '.'
+    # submat[np.ix_(list(complement), list(complement))] = '.'
+    for index in complement:
+        submat[index, :] = '.'
+        submat[:, index] = '.'
+
     submat_str = submat.__str__()
     submat_str = submat_str.replace("'", '')
     submat_str = submat_str.replace(",", '')
